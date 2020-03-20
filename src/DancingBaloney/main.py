@@ -31,12 +31,14 @@ def bundledCSS(webview, fname, _old):
 
     elif fname in ("deckbrowser.css","overview.css"):
         bg = conf.get("bg_img","sheep.gif")
-        css = getBGImage(webview, MOD_DIR, bg)
+        op = conf.get("bg_img_opacity",100)
+        css = getBGImage(webview, MOD_DIR, bg, op)
 
     elif fname == "toolbar-bottom.css":
         tool_img = conf.get("bottom_toolbar_bg_img", "#1E2438")
         if tool_img:
-            css = getBGImage(webview, MOD_DIR, tool_img)
+            op = conf.get("bottom_toolbar_bg_img_opacity",100)
+            css = getBGImage(webview, MOD_DIR, tool_img, op)
         else:
             color = conf.get("bottom_toolbar_bg_color")
             css = setBGColor(color, top=False)

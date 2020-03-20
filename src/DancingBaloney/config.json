@@ -1,6 +1,8 @@
 {
 	"bg_img": "sheep.gif",
+    "bg_img_opacity": 100,
 	"bottom_toolbar_bg_img": "",
+    "bottom_toolbar_bg_img_opacity": 100,
 	"bottom_toolbar_bg_color": "#1E2438",
 	"top_toolbar_bg_color": "#F6FFE9",
 	"custom_deckbrowser_style": "",

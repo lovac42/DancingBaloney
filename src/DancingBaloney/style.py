@@ -10,19 +10,27 @@ from .const import *
 from .lib.com.lovac42.anki.version import CCBC, ANKI21
 
 BODY_CSS = '''
-body {
+body::before {
   background: url("%s") no-repeat center center fixed !important;
   background-size: cover !important;
+  opacity: %f;
+  content: "";
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -99;
 }
 '''
 
 
-def getBGImage(webview, folder, img):
+def getBGImage(webview, folder, img, opacity):
     path = f"{folder}/user_files/{img}"
     url = webview.webBundlePath(path)
     if ANKI21:
         url = url.replace(r"/_anki/","/_addons/")
-    return BODY_CSS % url
+    return BODY_CSS % (url, opacity/100)
 
 
 def clearBGColor():

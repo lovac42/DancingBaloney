@@ -18,6 +18,10 @@ none or mario_bottom.png
 \#5D93FD for mario theme  
 
 
+## bg_img_opacity, bottom_toolbar_bg_img_opacity
+Allows changing the opacity of the images.
+Scale: 0 to 100
+
 ## custom_deckbrowser_style, custom_overview_style
 Name of custom.css file, these will replace anki's defaults in the resource/web folder and will allow for greater control over text displays.
 
