@@ -7,7 +7,22 @@
 from aqt import mw
 
 from .const import *
-from .lib.com.lovac42.anki.version import CCBC
+from .lib.com.lovac42.anki.version import CCBC, ANKI21
+
+BODY_CSS = '''
+body {
+  background: url("%s") no-repeat center center fixed !important;
+  background-size: cover !important;
+}
+'''
+
+
+def getBGImage(webview, folder, img):
+    path = f"{folder}/user_files/{img}"
+    url = webview.webBundlePath(path)
+    if ANKI21:
+        url = url.replace(r"/_anki/","/_addons/")
+    return BODY_CSS % url
 
 
 def clearBGColor():
