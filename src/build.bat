@@ -1,8 +1,8 @@
 @echo off
 set ZIP=C:\PROGRA~1\7-Zip\7z.exe a -tzip -y -r
 set REPO=DancingBaloney
-set NAME=DancingBaloney
-set PACKID=DancingBaloney
+set NAME=Dancing Baloney
+set PACKID=378638814
 set VERSION=0.0.1
 
 

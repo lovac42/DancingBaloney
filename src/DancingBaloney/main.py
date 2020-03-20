@@ -9,20 +9,16 @@ from aqt import mw
 from anki.hooks import wrap, addHook
 
 from .utils import *
+from .const import *
 from .config import Config
 
-try:
-    from anki.utils import pointVersion
-    OLD_VERSION = pointVersion() < 20
-except:
-    OLD_VERSION = True
+from .lib.com.lovac42.anki.version import CCBC
 
-
-
-conf = Config("DancingBaloney")
+conf = Config(ADDON_NAME)
 
 
 def bundledCSS(webview, fname, _old):
+    css = ""
     ret = _old(webview, fname)
 
     if mw.state == "review":
@@ -31,33 +27,35 @@ def bundledCSS(webview, fname, _old):
         mw.toolbar.web.eval(js)
 
     elif fname == "toolbar.css" and mw.state == "deckBrowser":
-        c = conf.get("top_toolbar_bg_color", "#F6FFE9")
-        if not OLD_VERSION:
-            ret += "<style>body {background: %s;}</style>"%c
-        else:
-            js="$(document.body).css('background-color','%s');"%c
+        color = conf.get("top_toolbar_bg_color", "#F6FFE9")
+        if CCBC or ANKI21_OLD:
+            js = f"$(document.body).css('background-color','{color}');"
             mw.toolbar.web.eval(js)
+        else:
+            css = f"body {{background: {color} !important;}}"
 
     elif fname in ("deckbrowser.css","overview.css"):
         bg = conf.get("bg_img","sheep.gif")
-        img = "%s/user_files/%s"%(MOD_DIR, bg)
-        ret += getBGImage(webview, img)
+        img = f"{MOD_DIR}/user_files/{bg}"
+        css = getBGImage(webview, img)
 
     elif fname == "toolbar-bottom.css":
         tool_img = conf.get("bottom_toolbar_bg_img", "#1E2438")
         if tool_img:
-            img = "%s/user_files/%s"%(MOD_DIR, tool_img)
-            ret += getBGImage(webview, img)
+            img = f"{MOD_DIR}/user_files/{tool_img}"
+            css = getBGImage(webview, img)
         else:
-            c = conf.get("bottom_toolbar_bg_color")
-            ret += "<style>body {background: %s;}</style>"%c
+            color = conf.get("bottom_toolbar_bg_color")
+            css = f"body {{background: {color} !important;}}"
 
-    return ret
+    if CCBC:
+        return f"{ret}\n{css}"
+    return f"{ret}\n<style>{css}</style>"
 
 
 # ===== EXEC ===========
 
-MOD_DIR = setWebExports()
+MOD_DIR = setWebExports(r".*\.(gif|png|jpe?g|bmp)$")
 
 aqt.webview.AnkiWebView.bundledCSS = wrap(
     aqt.webview.AnkiWebView.bundledCSS,
@@ -67,3 +65,4 @@ aqt.webview.AnkiWebView.bundledCSS = wrap(
 
 #reloads with config.json data
 addHook("profileLoaded", lambda:mw.reset(True))
+addHook(f"{ADDON_NAME}.configUpdated", lambda:mw.reset(True))

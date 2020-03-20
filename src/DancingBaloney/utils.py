@@ -7,20 +7,29 @@
 import os
 from aqt import mw
 
+from .lib.com.lovac42.anki.version import ANKI21
+
+
+BODY_CSS = '''
+body {
+  background: url("%s") no-repeat center center fixed !important;
+  background-size: cover !important;
+}
+'''
+
 
 def getBGImage(webview, path):
-    return '''
-<style>
-body {
-  background: url("%s") no-repeat center center fixed;
-  background-size: cover;
-}
-</style>''' % webview.webBundlePath(path).replace(r"/_anki/","/_addons/")
+    url = webview.webBundlePath(path)
+    if ANKI21:
+        url = url.replace(r"/_anki/","/_addons/")
+    return BODY_CSS % url
 
 
-def setWebExports():
+def setWebExports(media_types=""):
     MOD_ABS,_ = os.path.split(__file__)
-    MOD_DIR = os.path.basename(MOD_ABS)
-    mw.addonManager._webExports[MOD_DIR] = '.*\.(gif|png|jpe?g|bmp)$'
-    return MOD_DIR
+    if ANKI21:
+        MOD_DIR = os.path.basename(MOD_ABS)
+        mw.addonManager._webExports[MOD_DIR] = media_types
+        return MOD_DIR
+    return MOD_ABS
 
