@@ -2,5 +2,7 @@
 	"bg_img": "sheep.gif",
 	"bottom_toolbar_bg_img": "",
 	"bottom_toolbar_bg_color": "#1E2438",
-	"top_toolbar_bg_color": "#F6FFE9"
+	"top_toolbar_bg_color": "#F6FFE9",
+	"custom_deckbrowser_style": "",
+	"custom_overview_style": ""
 }

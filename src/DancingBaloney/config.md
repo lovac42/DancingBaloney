@@ -1,5 +1,8 @@
 # Dancing Baloney
 
+## text_color
+custom text color for deck list.
+
 ## bg_img
 sheep.gif, mario.png  
 
@@ -13,6 +16,11 @@ none or mario_bottom.png
 ## top_toolbar_bg_color
 \#F6FFE9 for sheep theme  
 \#5D93FD for mario theme  
+
+
+## custom_deckbrowser_style, custom_overview_style
+Name of custom.css file, these will replace anki's defaults in the resource/web folder and will allow for greater control over text displays.
+
 
 <br>
 <hr>

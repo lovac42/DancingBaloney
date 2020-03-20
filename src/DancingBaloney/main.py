@@ -8,8 +8,9 @@ import aqt
 from aqt import mw
 from anki.hooks import wrap, addHook
 
-from .utils import *
 from .const import *
+from .utils import *
+from .style import *
 from .config import Config
 
 from .lib.com.lovac42.anki.version import CCBC
@@ -19,43 +20,49 @@ conf = Config(ADDON_NAME)
 
 def bundledCSS(webview, fname, _old):
     css = ""
-    ret = _old(webview, fname)
 
     if mw.state == "review":
         # TODO: Fix for new version, it does not clear color on toolbar.
-        js="$(document.body).css('background-color','');"
-        mw.toolbar.web.eval(js)
+        clearBGColor()
 
     elif fname == "toolbar.css" and mw.state == "deckBrowser":
         color = conf.get("top_toolbar_bg_color", "#F6FFE9")
-        if CCBC or ANKI21_OLD:
-            js = f"$(document.body).css('background-color','{color}');"
-            mw.toolbar.web.eval(js)
-        else:
-            css = f"body {{background: {color} !important;}}"
+        css = setBGColor(color, top=True)
 
     elif fname in ("deckbrowser.css","overview.css"):
         bg = conf.get("bg_img","sheep.gif")
-        img = f"{MOD_DIR}/user_files/{bg}"
-        css = getBGImage(webview, img)
+        css = getBGImage(webview, MOD_DIR, bg)
 
     elif fname == "toolbar-bottom.css":
         tool_img = conf.get("bottom_toolbar_bg_img", "#1E2438")
         if tool_img:
-            img = f"{MOD_DIR}/user_files/{tool_img}"
-            css = getBGImage(webview, img)
+            css = getBGImage(webview, MOD_DIR, tool_img)
         else:
             color = conf.get("bottom_toolbar_bg_color")
-            css = f"body {{background: {color} !important;}}"
+            css = setBGColor(color, top=False)
 
-    if CCBC:
-        return f"{ret}\n{css}"
-    return f"{ret}\n<style>{css}</style>"
+    # Custom style sheets
+    custom_css = conf.get(f"custom_{fname[:-4]}_style")
+    if custom_css:
+        cc = f"{MOD_DIR}/user_files/{custom_css}"
+        try:
+            import ccbc
+            ret = ccbc.utils.readFile(cc)
+        except ImportError:
+            ret = _old(webview, cc).replace(r"/_anki/","/_addons/")
+    else:
+        ret = _old(webview, fname)
+
+    if css:
+        if CCBC:
+            return f"{ret}\n{css}"
+        return f"{ret}\n<style>{css}</style>"
+    return ret
 
 
 # ===== EXEC ===========
 
-MOD_DIR = setWebExports(r".*\.(gif|png|jpe?g|bmp)$")
+MOD_DIR = setWebExports(r".*\.(gif|png|jpe?g|bmp|css)$")
 
 aqt.webview.AnkiWebView.bundledCSS = wrap(
     aqt.webview.AnkiWebView.bundledCSS,
