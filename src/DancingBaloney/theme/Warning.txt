@@ -1,0 +1,3 @@
+This folder is overwritten on updates.
+
+Backup all custom themes.
