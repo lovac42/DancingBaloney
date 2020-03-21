@@ -21,6 +21,7 @@ conf = Config(ADDON_NAME)
 def bundledCSS(webview, fname, _old):
     theme = conf.get("theme")
     if theme:
+        theme = f"theme/{theme}"
         css = themeLoader(webview, fname, theme)
     else:
         css = manualLoader(webview, fname)
@@ -100,6 +101,7 @@ def onAfterStateChange(newS, oldS, *args):
     theme = conf.get("theme", "")
     if theme:
         bg = f"{newS}_toolbar.jpg"
+        theme = f"theme/{theme}"
         setToolbarImage(mw.toolbar.web, MOD_DIR, bg, theme)
 
 
