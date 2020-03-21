@@ -5,9 +5,15 @@
 
 
 from .lib.com.lovac42.anki.version import POINT_VERSION
+from .utils import getAbsolutePath, setWebExports
 
 
 # Required by top toolbar for setting style sheets.
 ANKI21_OLD = POINT_VERSION < 20
 
 ADDON_NAME = "DancingBaloney"
+
+MOD_DIR = setWebExports(r".*\.(gif|png|jpe?g|bmp|css)$")
+
+ADDON_PATH = getAbsolutePath(__file__)
+

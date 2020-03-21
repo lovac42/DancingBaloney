@@ -4,6 +4,7 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 
 
+import os
 from aqt import mw
 
 from .const import *
@@ -36,19 +37,39 @@ button {
 '''
 
 
+CSS_GEAR = '''
+img.gears {
+  content:url("%s");
+}
+'''
+
+
 def setToolbarImage(webview, folder, img, theme="user_files"):
     url = _getImgUrl(webview, folder, img, theme)
+    if not url:
+        return
     js = f'''$(document.body).css('background','url("{url}") no-repeat center center fixed').css('background-size','cover');'''
     webview.eval(js)
 
 
 def getBGImage(webview, folder, img, opacity, theme="user_files"):
     url = _getImgUrl(webview, folder, img, theme)
+    if not url:
+        return ""
     return CSS_BODY % (url, opacity/100)
+
+
+def getGearImage(webview, folder, img, theme="user_files"):
+    url = _getImgUrl(webview, folder, img, theme)
+    if not url:
+        return ""
+    return CSS_GEAR % (url)
 
 
 def getButtonImage(webview, folder, img, opacity, theme="user_files"):
     url = _getImgUrl(webview, folder, img, theme)
+    if not url:
+        return ""
     return CSS_BUTTON % (url, opacity/100)
 
 
@@ -65,8 +86,9 @@ def clearBGColor(webview):
 
 
 def _getImgUrl(webview, folder, img, theme):
-    path = f"{folder}/{theme}/{img}"
-    url = webview.webBundlePath(path)
-    if ANKI21:
-        url = url.replace(r"/_anki/","/_addons/")
-    return url
+    if os.path.exists(f"{ADDON_PATH}/{theme}/{img}"):
+        path = f"{folder}/{theme}/{img}"
+        url = webview.webBundlePath(path)
+        if ANKI21:
+            url = url.replace(r"/_anki/","/_addons/")
+        return url

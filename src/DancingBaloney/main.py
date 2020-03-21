@@ -13,7 +13,7 @@ from .utils import *
 from .style import *
 from .config import Config
 
-from .lib.com.lovac42.anki.version import CCBC
+from .lib.com.lovac42.anki.version import CCBC, ANKI21
 
 conf = Config(ADDON_NAME)
 
@@ -62,9 +62,13 @@ def themeLoader(webview, fname, theme):
         bg = f"{mw.state}_{fname[:-4]}.jpg"
         css = getBGImage(webview, MOD_DIR, bg, op, theme)
 
-        # if "toolbar" in fname:
         btn_bg = f"btn_{bg}"
         css += getButtonImage(webview, MOD_DIR, btn_bg, 80, theme)
+
+        if ANKI21 and "deckbr" in fname:
+            gear_bg = f"gear.png"
+            css += getGearImage(webview, MOD_DIR, gear_bg, theme)
+
     return css
 
 
@@ -86,6 +90,9 @@ def manualLoader(webview, fname):
         bg = conf.get("bg_img","sheep.gif")
         op = conf.get("bg_img_opacity", 100)
         css = getBGImage(webview, MOD_DIR, bg, op)
+
+        gear_bg = conf.get("gear_img","")
+        css += getGearImage(webview, MOD_DIR, gear_bg)
 
     elif fname == "toolbar-bottom.css":
         tool_img = conf.get("bottom_toolbar_bg_img", "#1E2438")
@@ -110,8 +117,6 @@ def onAfterStateChange(newS, oldS, *args):
 
 
 # ===== EXEC ===========
-
-MOD_DIR = setWebExports(r".*\.(gif|png|jpe?g|bmp|css)$")
 
 def onProfileLoaded():
     aqt.webview.AnkiWebView.bundledCSS = wrap(
