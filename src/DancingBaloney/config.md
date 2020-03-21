@@ -1,7 +1,8 @@
 # Dancing Baloney
 
-## text_color
-custom text color for deck list.
+## theme
+Only chess is currently available.  
+Type "chess" here
 
 ## bg_img
 sheep.gif, mario.png  
@@ -19,7 +20,7 @@ none or mario_bottom.png
 
 
 ## bg_img_opacity, bottom_toolbar_bg_img_opacity
-Allows changing the opacity of the images.
+Allows changing the opacity of the images.  
 Scale: 0 to 100
 
 ## custom_deckbrowser_style, custom_overview_style

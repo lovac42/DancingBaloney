@@ -9,7 +9,10 @@ from aqt import mw
 from .const import *
 from .lib.com.lovac42.anki.version import CCBC, ANKI21
 
-BODY_CSS = '''
+
+JS_CLEAR_BG = "$(document.body).css('background-color','');"
+
+CSS_BODY = '''
 body::before {
   background: url("%s") no-repeat center center fixed !important;
   background-size: cover !important;
@@ -24,18 +27,29 @@ body::before {
 }
 '''
 
+CSS_BUTTON = '''
+button {
+  background: url("%s") !important;
+  opacity: %f;
+  z-index: -99;
+}
+'''
 
-def getBGImage(webview, folder, img, opacity):
-    path = f"{folder}/user_files/{img}"
-    url = webview.webBundlePath(path)
-    if ANKI21:
-        url = url.replace(r"/_anki/","/_addons/")
-    return BODY_CSS % (url, opacity/100)
+
+def setToolbarImage(webview, folder, img, theme="user_files"):
+    url = _getImgUrl(webview, folder, img, theme)
+    js = f'''$(document.body).css('background','url("{url}") no-repeat center center fixed').css('background-size','cover');'''
+    webview.eval(js)
 
 
-def clearBGColor():
-    js="$(document.body).css('background-color','');"
-    mw.toolbar.web.eval(js)
+def getBGImage(webview, folder, img, opacity, theme="user_files"):
+    url = _getImgUrl(webview, folder, img, theme)
+    return CSS_BODY % (url, opacity/100)
+
+
+def getButtonImage(webview, folder, img, opacity, theme="user_files"):
+    url = _getImgUrl(webview, folder, img, theme)
+    return CSS_BUTTON % (url, opacity/100)
 
 
 def setBGColor(color, top=True):
@@ -45,3 +59,14 @@ def setBGColor(color, top=True):
         return ""
     return f"body {{background: {color} !important;}}"
 
+
+def clearBGColor(webview):
+    webview.eval(JS_CLEAR_BG)
+
+
+def _getImgUrl(webview, folder, img, theme):
+    path = f"{folder}/{theme}/{img}"
+    url = webview.webBundlePath(path)
+    if ANKI21:
+        url = url.replace(r"/_anki/","/_addons/")
+    return url
