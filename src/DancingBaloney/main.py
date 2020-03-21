@@ -19,32 +19,25 @@ conf = Config(ADDON_NAME)
 
 
 def bundledCSS(webview, fname, _old):
+    ret = None
     theme = conf.get("theme")
     if theme:
         theme = f"theme/{theme}"
-        css = themeLoader(webview, fname, theme)
+        css, custom_css = themeLoader(webview, fname, theme)
     else:
-        css = manualLoader(webview, fname)
+        css, custom_css = manualLoader(webview, fname)
         theme = "user_files"
 
     # Custom style sheets
-    custom_css = conf.get(f"custom_{fname[:-4]}_style")
     if custom_css:
-        cc = f"{MOD_DIR}/{theme}/{custom_css}"
-        try:
-            import ccbc
-            ret = ccbc.utils.readFile(cc)
-        except ImportError:
-            ret = _old(webview, cc).replace(r"/_anki/","/_addons/")
-    else:
+        ret = getCustomPath(custom_css, theme)
+    if ret == None:
         ret = _old(webview, fname)
-
     if css:
         if CCBC:
             return f"{ret}\n{css}"
         return f"{ret}\n<style>{css}</style>"
     return ret
-
 
 
 
@@ -69,7 +62,7 @@ def themeLoader(webview, fname, theme):
             gear_bg = f"gear.png"
             css += getGearImage(webview, MOD_DIR, gear_bg, theme)
 
-    return css
+    return css, fname
 
 
 
@@ -91,8 +84,9 @@ def manualLoader(webview, fname):
         op = conf.get("bg_img_opacity", 100)
         css = getBGImage(webview, MOD_DIR, bg, op)
 
-        gear_bg = conf.get("gear_img","")
-        css += getGearImage(webview, MOD_DIR, gear_bg)
+        if ANKI21:
+            gear_bg = conf.get("gear_img")
+            css += getGearImage(webview, MOD_DIR, gear_bg)
 
     elif fname == "toolbar-bottom.css":
         tool_img = conf.get("bottom_toolbar_bg_img", "#1E2438")
@@ -103,7 +97,8 @@ def manualLoader(webview, fname):
             color = conf.get("bottom_toolbar_bg_color")
             css = setBGColor(color, top=False)
 
-    return css
+    custom_css = conf.get(f"custom_{fname[:-4]}_style")
+    return css, custom_css
 
 
 

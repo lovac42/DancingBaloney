@@ -85,9 +85,21 @@ def clearBGColor(webview):
     webview.eval(JS_CLEAR_BG)
 
 
-def _getImgUrl(webview, folder, img, theme):
-    if os.path.exists(f"{ADDON_PATH}/{theme}/{img}"):
-        path = f"{folder}/{theme}/{img}"
+def getCustomPath(fname, theme="user_files"):
+    css = f"{MOD_DIR}/{theme}/{fname}"
+    try:
+        import ccbc
+        return ccbc.utils.readFile(css)
+    except ImportError:
+        url = _getImgUrl(mw.web, MOD_DIR, fname, theme)
+        if url:
+            return f'<link rel="stylesheet" type="text/css" href="{url}">'
+
+
+
+def _getImgUrl(webview, folder, fname, theme):
+    if fname and os.path.exists(f"{ADDON_PATH}/{theme}/{fname}"):
+        path = f"{folder}/{theme}/{fname}"
         url = webview.webBundlePath(path)
         if ANKI21:
             url = url.replace(r"/_anki/","/_addons/")
