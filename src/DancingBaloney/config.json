@@ -7,5 +7,6 @@
 	"top_toolbar_bg_color": "#F6FFE9",
 	"custom_deckbrowser_style": "",
 	"custom_overview_style": "",
-    "theme": ""
+    "theme": "",
+    "theme_opacity": 100
 }

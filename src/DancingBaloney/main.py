@@ -55,8 +55,12 @@ def themeLoader(webview, fname, theme):
         "deckbrowser.css","overview.css","reviewer.css",
         "toolbar-bottom.css","reviewer-bottom.css"
     ):
+        # Note: Can't change opacity on different versions/platforms.
+        # So theme_opacity is limited to the main view only.
+        op = 100 if "bottom" in fname else conf.get("theme_opacity", 100)
+
         bg = f"{mw.state}_{fname[:-4]}.jpg"
-        css = getBGImage(webview, MOD_DIR, bg, 100, theme)
+        css = getBGImage(webview, MOD_DIR, bg, op, theme)
 
         # if "toolbar" in fname:
         btn_bg = f"btn_{bg}"
@@ -80,13 +84,13 @@ def manualLoader(webview, fname):
 
     elif fname in ("deckbrowser.css","overview.css"):
         bg = conf.get("bg_img","sheep.gif")
-        op = conf.get("bg_img_opacity",100)
+        op = conf.get("bg_img_opacity", 100)
         css = getBGImage(webview, MOD_DIR, bg, op)
 
     elif fname == "toolbar-bottom.css":
         tool_img = conf.get("bottom_toolbar_bg_img", "#1E2438")
         if tool_img:
-            op = conf.get("bottom_toolbar_bg_img_opacity",100)
+            op = conf.get("bottom_toolbar_bg_img_opacity", 100)
             css = getBGImage(webview, MOD_DIR, tool_img, op)
         else:
             color = conf.get("bottom_toolbar_bg_color")
