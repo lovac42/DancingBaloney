@@ -81,8 +81,12 @@ def manualLoader(webview, fname):
 
     elif fname in ("deckbrowser.css","overview.css"):
         bg = conf.get("bg_img","sheep.gif")
-        op = conf.get("bg_img_opacity", 100)
-        css = getBGImage(webview, MOD_DIR, bg, op)
+        if bg:
+            op = conf.get("bg_img_opacity", 100)
+            css = getBGImage(webview, MOD_DIR, bg, op)
+        else:
+            color = conf.get("bg_color", "#3B6EA5")
+            css = setBGColor(color, top=False)
 
         if ANKI21:
             gear_bg = conf.get("gear_img")

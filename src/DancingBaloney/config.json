@@ -1,6 +1,7 @@
 {
 	"bg_img": "sheep.gif",
     "bg_img_opacity": 100,
+    "bg_color": "#3B6EA5",
 	"gear_img": "",
 	"bottom_toolbar_bg_img": "",
     "bottom_toolbar_bg_img_opacity": 100,
