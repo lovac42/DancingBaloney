@@ -2,6 +2,7 @@
 
 More background photos here. https://www.dropbox.com/sh/okuugwnbu5ip1so/AAB1CJwAjGgwGbVEJdSuKsfda?dl=0
 
+Go to View > Wallpaper to bring up the gui manager and change wallpaper settings.
 
 <img src="https://github.com/lovac42/DancingBaloney/blob/master/screenshots/scr_sheep.gif?raw=true" />  
 
