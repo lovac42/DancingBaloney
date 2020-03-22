@@ -76,8 +76,10 @@ def manualLoader(webview, fname):
         clearBGColor(mw.toolbar.web)
 
     elif fname == "toolbar.css" and mw.state == "deckBrowser":
-        color = conf.get("top_toolbar_bg_color", "#F6FFE9")
-        css = setBGColor(color, top=True)
+        img = conf.get("top_toolbar_bg_img")
+        if not img: #colors css prevent setting images in stateChanged hook
+            color = conf.get("top_toolbar_bg_color", "#F6FFE9")
+            css = setBGColor(color, top=True)
 
     elif fname in ("deckbrowser.css","overview.css"):
         bg = conf.get("bg_img","sheep.gif")
@@ -105,13 +107,16 @@ def manualLoader(webview, fname):
     return css, custom_css
 
 
-
 def onAfterStateChange(newS, oldS, *args):
     "This is needed to get around an issue with setting images on the toolbar."
-    theme = conf.get("theme", "")
+    theme = conf.get("theme")
     if theme:
         bg = f"{newS}_toolbar.jpg"
         theme = f"theme/{theme}"
+    else:
+        bg = conf.get("top_toolbar_bg_img")
+        theme = "user_files"
+    if bg:
         setToolbarImage(mw.toolbar.web, MOD_DIR, bg, theme)
 
 
