@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Settings</class>
+ <widget class="QTabWidget" name="Settings">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Wallpaper Settings</string>
+  </property>
+  <property name="currentIndex">
+   <number>1</number>
+  </property>
+  <widget class="QWidget" name="Wallpaper">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <attribute name="title">
+    <string>Wallpaper</string>
+   </attribute>
+   <widget class="QGroupBox" name="toolbar_groupbox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>371</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Top Toolbar</string>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>351</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="toolbox_grid_layout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="toolbar_color_label">
+        <property name="text">
+         <string>Color:   </string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="toolbar_color_input"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="toolbar_color_button">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Colors</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="toolbar_image_label">
+        <property name="text">
+         <string>Image:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="toolbar_image_input"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="toolbar_image_button">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="mw_groupbox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>371</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Main Window</string>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>351</width>
+       <height>112</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="mw_grid_layout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="mw_color_label">
+        <property name="text">
+         <string>Color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="mw_opacity_label">
+        <property name="text">
+         <string>Opacity:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="mw_image_input"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="mw_image_label">
+        <property name="text">
+         <string>Image:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="mw_color_button">
+        <property name="text">
+         <string>Colors</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLineEdit" name="mw_color_input"/>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="mw_image_button">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="mw_gear_label">
+        <property name="text">
+         <string>Gear:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLineEdit" name="mw_gear_input"/>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="mw_gear_button">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QSlider" name="mw_opacity_slider">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="sliderPosition">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLabel" name="mw_opacity_value">
+        <property name="text">
+         <string>100%</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="btm_groupbox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>260</y>
+      <width>371</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Bottom Toolbar</string>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>351</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="btm_grid_layout">
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="btm_image_input"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="btm_image_label">
+        <property name="text">
+         <string>Image:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="btm_opacity_label">
+        <property name="text">
+         <string>Opacity:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="btm_color_label">
+        <property name="text">
+         <string>Color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="btm_color_input"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btm_color_button">
+        <property name="text">
+         <string>Colors</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="btm_image_button">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSlider" name="btm_opacity_slider">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="sliderPosition">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="btm_opacity_value">
+        <property name="text">
+         <string>100%</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="Themes">
+   <attribute name="title">
+    <string>Themes</string>
+   </attribute>
+   <widget class="QGroupBox" name="themes_groupbox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>381</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Themes</string>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>361</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="themes_grid_layout">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="theme_combobox"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSlider" name="theme_opacity_slider">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="sliderPosition">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="theme_opacity_label">
+        <property name="text">
+         <string>Opacity:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="theme_label">
+        <property name="text">
+         <string>Theme:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="theme_opacity_value">
+        <property name="text">
+         <string>100%</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>140</y>
+      <width>301</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1) Themes take priority over wallpapers. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;2) Anki auto deletes the theme folder on each update, backup custom themes. Do not save any personal themes here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

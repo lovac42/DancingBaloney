@@ -11,11 +11,14 @@ from anki.hooks import wrap, addHook
 from .const import *
 from .utils import *
 from .style import *
-from .config import Config
 
 from .lib.com.lovac42.anki.version import CCBC, ANKI21
 
+from .config import Config
 conf = Config(ADDON_NAME)
+
+from .gui import Manager
+mang = Manager(conf)
 
 
 def bundledCSS(webview, fname, _old):
