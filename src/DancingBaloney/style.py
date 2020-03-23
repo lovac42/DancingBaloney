@@ -16,6 +16,7 @@ JS_CLEAR_BG = "$(document.body).css('background','');"
 
 #TODO: add options for css rotate and zoom
 # transform: rotate(180deg);
+# transform: scale(0.4);
 CSS_BODY = '''
 body::before {
   background: url("%s") no-repeat center center fixed !important;
