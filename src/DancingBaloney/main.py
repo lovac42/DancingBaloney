@@ -8,11 +8,11 @@ import aqt
 from aqt import mw
 from anki.hooks import wrap, addHook
 
+from .lib.com.lovac42.anki.version import CCBC, ANKI21
+
 from .const import *
 from .utils import *
 from .style import *
-
-from .lib.com.lovac42.anki.version import CCBC, ANKI21
 
 from .config import Config
 conf = Config(ADDON_NAME)
@@ -47,6 +47,7 @@ def bundledCSS(webview, fname, _old):
 
 def themeLoader(webview, fname, theme):
     css = ""
+
     if fname in (
         "deckbrowser.css","overview.css","reviewer.css",
         "toolbar-bottom.css","reviewer-bottom.css"
@@ -65,6 +66,10 @@ def themeLoader(webview, fname, theme):
             gear_bg = f"gear.png"
             css += getGearImage(webview, MOD_DIR, gear_bg, theme)
 
+    elif fname == "resetRequired.css":
+        bg = f"{mw.state}_{fname[:-4]}.jpg"
+        setImageWithJS(webview, MOD_DIR, bg, theme)
+
     return css, fname
 
 
@@ -72,39 +77,38 @@ def themeLoader(webview, fname, theme):
 def manualLoader(webview, fname):
     css = ""
 
-    if mw.state == "review":
-        # TODO: Fix for new version, it does not clear color on toolbar.
+    if fname == "resetRequired.css":
+        bg = conf.get("bg_img")
+        setImageWithJS(webview, MOD_DIR, bg)
+
+    elif mw.state == "review":
         # One or the other, targets different versions
-        clearBGColor(webview)
-        clearBGColor(mw.toolbar.web)
+        clearBackground(webview)
+        clearBackground(mw.toolbar.web)
 
     elif fname == "toolbar.css" and mw.state == "deckBrowser":
-        img = conf.get("top_toolbar_bg_img")
-        if not img: #colors css prevent setting images in stateChanged hook
-            color = conf.get("top_toolbar_bg_color", "#F6FFE9")
-            css = setBGColor(color, top=True)
+        clearBackground(mw.toolbar.web)
+
+        color = conf.get("top_toolbar_bg_color", "#F6FFE9")
+        css = setBGColor(webview, color, top=True)
+        #Note: Images for toolbar is set in onAfterStateChange
+        #      after page has been loaded.
 
     elif fname in ("deckbrowser.css","overview.css"):
+        #TODO: sep settings for overview
+        color = conf.get("bg_color", "#3B6EA5") #win2k default blue
         bg = conf.get("bg_img","sheep.gif")
-        if bg:
-            op = conf.get("bg_img_opacity", 100)
-            css = getBGImage(webview, MOD_DIR, bg, op)
-        else:
-            color = conf.get("bg_color", "#3B6EA5")
-            css = setBGColor(color, top=False)
+        op = conf.get("bg_img_opacity", 100)
+        css = getCSS(webview, color, bg, op)
 
-        if ANKI21:
-            gear_bg = conf.get("gear_img")
-            css += getGearImage(webview, MOD_DIR, gear_bg)
+        gear_bg = conf.get("gear_img")
+        css += getGearImage(webview, MOD_DIR, gear_bg)
 
     elif fname == "toolbar-bottom.css":
-        tool_img = conf.get("bottom_toolbar_bg_img", "#1E2438")
-        if tool_img:
-            op = conf.get("bottom_toolbar_bg_img_opacity", 100)
-            css = getBGImage(webview, MOD_DIR, tool_img, op)
-        else:
-            color = conf.get("bottom_toolbar_bg_color")
-            css = setBGColor(color, top=False)
+        color = conf.get("bottom_toolbar_bg_color", "#3B6EA5")
+        bg = conf.get("bottom_toolbar_bg_img")
+        op = conf.get("bottom_toolbar_bg_img_opacity", 100)
+        css = getCSS(webview, color, bg, op)
 
     custom_css = conf.get(f"custom_{fname[:-4]}_style")
     return css, custom_css
@@ -112,15 +116,24 @@ def manualLoader(webview, fname):
 
 def onAfterStateChange(newS, oldS, *args):
     "This is needed to get around an issue with setting images on the toolbar."
+
+    if newS == "resetRequired":
+        mw.web.bundledCSS("resetRequired.css")
+        return
+
+    bg = None
     theme = conf.get("theme")
     if theme:
         bg = f"{newS}_toolbar.jpg"
         theme = f"theme/{theme}"
+    elif newS == "review":
+        clearBackground(mw.toolbar.web)
     else:
         bg = conf.get("top_toolbar_bg_img")
         theme = "user_files"
+
     if bg:
-        setToolbarImage(mw.toolbar.web, MOD_DIR, bg, theme)
+        setImageWithJS(mw.toolbar.web, MOD_DIR, bg, theme)
 
 
 # ===== EXEC ===========

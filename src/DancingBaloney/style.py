@@ -11,8 +11,11 @@ from .const import *
 from .lib.com.lovac42.anki.version import CCBC, ANKI21
 
 
-JS_CLEAR_BG = "$(document.body).css('background-color','');"
+JS_CLEAR_BG = "$(document.body).css('background','');"
 
+
+#TODO: add options for css rotate and zoom
+# transform: rotate(180deg);
 CSS_BODY = '''
 body::before {
   background: url("%s") no-repeat center center fixed !important;
@@ -23,10 +26,12 @@ body::before {
   left: 0;
   bottom: 0;
   right: 0;
-  position: absolute;
+  position: fixed;
   z-index: -99;
+  will-change: transform;
 }
 '''
+
 
 CSS_BUTTON = '''
 button {
@@ -37,6 +42,7 @@ button {
 '''
 
 
+#CSS3 only
 CSS_GEAR = '''
 img.gears {
   content:url("%s");
@@ -44,7 +50,7 @@ img.gears {
 '''
 
 
-def setToolbarImage(webview, folder, img, theme="user_files"):
+def setImageWithJS(webview, folder, img, theme="user_files"):
     url = _getImgUrl(webview, folder, img, theme)
     if not url:
         return
@@ -73,15 +79,20 @@ def getButtonImage(webview, folder, img, opacity, theme="user_files"):
     return CSS_BUTTON % (url, opacity/100)
 
 
-def setBGColor(color, top=True):
+def setBGColor(webview, color, top=True):
+    if not color and top:
+        clearBackground(webview)
+        clearBackground(mw.toolbar.web)
+        return ""
     if top and (CCBC or ANKI21_OLD):
         js = f"$(document.body).css('background-color','{color}');"
+        webview.eval(js)
         mw.toolbar.web.eval(js)
         return ""
-    return f"body {{background: {color} !important;}}"
+    return f"body {{background-color: {color} !important;}}"
 
 
-def clearBGColor(webview):
+def clearBackground(webview):
     webview.eval(JS_CLEAR_BG)
 
 
@@ -104,3 +115,11 @@ def _getImgUrl(webview, folder, fname, theme):
         if ANKI21:
             url = url.replace(r"/_anki/","/_addons/")
         return url
+
+
+def getCSS(webview, color, img, opacity):
+    css = setBGColor(webview, color, top=False)
+    if img:
+        css += getBGImage(webview, MOD_DIR, img, opacity)
+    return css
+
