@@ -31,6 +31,7 @@ class Manager:
 
 
 class SettingsDialog(QDialog):
+    lastColor = QColor("white") #initialize color wheel on blank fields
 
     def __init__(self, conf):
         QDialog.__init__(self, mw, Qt.Window)
@@ -184,6 +185,7 @@ class SettingsDialog(QDialog):
         f.theme_combobox.addItems(themeList)
         try:
             n = themeList.index(self.conf.get("theme")) + 1
+            self.tabWidget.setCurrentIndex(1)
         except ValueError:
             n = 0
             self.tabWidget.setCurrentIndex(0)
@@ -252,13 +254,16 @@ class SettingsDialog(QDialog):
     def _chooseColor(self, lineEditor):
         def liveColor(qcolor):
             if qcolor.isValid():
-                cor=qcolor.name()
-                lineEditor.setText(cor)
+                self.lastColor=qcolor
+                lineEditor.setText(qcolor.name())
 
         diag=QDialog(self)
         form=getcolor.Ui_Dialog()
         form.setupUi(diag)
         cor = lineEditor.text()
-        form.color.setCurrentColor(QColor(cor))
+        if QColor.isValidColor(cor):
+            form.color.setCurrentColor(QColor(cor))
+        else:
+            form.color.setCurrentColor(self.lastColor)
         form.color.currentColorChanged.connect(liveColor)
         diag.show()
