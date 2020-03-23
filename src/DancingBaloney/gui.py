@@ -32,6 +32,7 @@ class Manager:
 
 class SettingsDialog(QDialog):
     lastColor = QColor("white") #initialize color wheel on blank fields
+    timer = None
 
     def __init__(self, conf):
         QDialog.__init__(self, mw, Qt.Window)
@@ -56,7 +57,6 @@ class SettingsDialog(QDialog):
     def accept(self):
         self.conf.save()
         QDialog.accept(self)
-        mw.reset(True)
 
     def setupConnections(self):
         f = self.form
@@ -224,18 +224,18 @@ class SettingsDialog(QDialog):
 
     def _updateLineEdit(self, key, func):
         self.conf.set(key, func.text())
-        mw.reset(True)
+        self._refresh()
 
     def _updateComboBox(self):
         self.conf.set("theme",
             self.form.theme_combobox.currentText())
-        mw.reset(True)
+        self._refresh(150)
 
     def _updateSliderLabel(self, slider, label, key):
         n=slider.value()
         label.setText("% 5d%%"%n)
         self.conf.set(f"{key}_opacity", n)
-        mw.reset(True)
+        self._refresh()
 
     def _getThemes(self):
         d = f"{ADDON_PATH}/theme"
@@ -267,3 +267,10 @@ class SettingsDialog(QDialog):
             form.color.setCurrentColor(self.lastColor)
         form.color.currentColorChanged.connect(liveColor)
         diag.show()
+
+
+    def _refresh(self, ms=100):
+        if self.timer:
+            self.timer.stop()
+        self.timer = mw.progress.timer(
+            ms, lambda:mw.reset(True), False)
