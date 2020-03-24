@@ -52,12 +52,20 @@ def themeLoader(webview, fname, theme):
         "deckbrowser.css","overview.css","reviewer.css",
         "toolbar-bottom.css","reviewer-bottom.css"
     ):
+
+        color = conf.get("theme_bg_color", "")
+        bg = f"{mw.state}_{fname[:-4]}.jpg"
+
         # Note: Can't change opacity on different versions/platforms.
         # So theme_opacity is limited to the main view only.
-        op = 100 if "bottom" in fname else conf.get("theme_opacity", 100)
-
-        bg = f"{mw.state}_{fname[:-4]}.jpg"
-        css = getBGImage(webview, MOD_DIR, bg, op, theme)
+        if "bottom" in fname:
+            op = 100
+            color = ""
+        elif mw.state == "review":
+            op = conf.get("theme_rev_opacity", 100)
+        else:
+            op = conf.get("theme_opacity", 100)
+        css = getCSS(webview, color, bg, op, theme)
 
         btn_bg = f"btn_{bg}"
         css += getButtonImage(webview, MOD_DIR, btn_bg, 80, theme)

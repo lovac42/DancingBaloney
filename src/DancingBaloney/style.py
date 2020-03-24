@@ -118,9 +118,9 @@ def _getImgUrl(webview, folder, fname, theme):
         return url
 
 
-def getCSS(webview, color, img, opacity):
+def getCSS(webview, color, img, opacity, theme="user_files"):
     css = setBGColor(webview, color, top=False)
     if img:
-        css += getBGImage(webview, MOD_DIR, img, opacity)
+        css += getBGImage(webview, MOD_DIR, img, opacity, theme)
     return css
 

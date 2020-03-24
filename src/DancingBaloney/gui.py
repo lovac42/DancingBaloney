@@ -61,15 +61,24 @@ class SettingsDialog(QDialog):
     def setupConnections(self):
         f = self.form
 
-        # Themes -----------
+        # ComboBoxes -----------
         f.theme_combobox.currentIndexChanged.connect(
             self._updateComboBox
         )
+
+        # Sliders
         f.theme_opacity_slider.valueChanged.connect(
             lambda:self._updateSliderLabel(
                 f.theme_opacity_slider,
                 f.theme_opacity_value,
                 "theme"
+            )
+        )
+        f.theme_rev_opacity_slider.valueChanged.connect(
+            lambda:self._updateSliderLabel(
+                f.theme_rev_opacity_slider,
+                f.theme_rev_opacity_value,
+                "theme_rev"
             )
         )
         f.mw_opacity_slider.valueChanged.connect(
@@ -87,6 +96,15 @@ class SettingsDialog(QDialog):
             )
         )
 
+        # LineEdits ====================
+
+        # Themes ----------------
+        f.theme_color_input.textChanged.connect(
+            lambda:self._updateLineEdit(
+                "theme_bg_color",
+                f.theme_color_input
+            )
+        )
 
         # Toolbar ----------------
         f.toolbar_color_input.textChanged.connect(
@@ -159,6 +177,11 @@ class SettingsDialog(QDialog):
         )
 
         # Color Buttons ------------------
+        f.theme_color_button.clicked.connect(
+            lambda:self._chooseColor(
+                f.theme_color_input
+            )
+        )
         f.toolbar_color_button.clicked.connect(
             lambda:self._chooseColor(
                 f.toolbar_color_input
@@ -185,7 +208,7 @@ class SettingsDialog(QDialog):
         f.theme_combobox.addItems(themeList)
         try:
             n = themeList.index(self.conf.get("theme")) + 1
-            self.tabWidget.setCurrentIndex(1)
+            self.tabWidget.setCurrentIndex(4)
         except ValueError:
             n = 0
             self.tabWidget.setCurrentIndex(0)
@@ -194,6 +217,13 @@ class SettingsDialog(QDialog):
         n = self.conf.get("theme_opacity", 100)
         f.theme_opacity_slider.setValue(n)
         f.theme_opacity_value.setText("% 5d%%"%n)
+
+        n = self.conf.get("theme_rev_opacity", 100)
+        f.theme_rev_opacity_slider.setValue(n)
+        f.theme_rev_opacity_value.setText("% 5d%%"%n)
+
+        s = self.conf.get("theme_bg_color", "")
+        f.theme_color_input.setText(s)
 
         # Toolbar ----------------
         s = self.conf.get("top_toolbar_bg_color", "")
