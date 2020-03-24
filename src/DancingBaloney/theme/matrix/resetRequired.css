@@ -1,0 +1,11 @@
+body {
+  background-color: black;
+}
+
+#resume {
+  color: gray;
+  background-color: #1F1F1F;
+  border-color: darkgreen;
+  position: absolute;
+  right: 50px;
+}

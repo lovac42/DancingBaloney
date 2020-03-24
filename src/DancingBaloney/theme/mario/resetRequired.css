@@ -1,0 +1,16 @@
+body {
+  background-color: black;
+}
+
+#resume {
+  visibility: visible;
+  color: maroon;
+  background-color: #1F1F1F;
+  border-color: black;
+  position: absolute;
+  right: 50px;
+}
+
+div div {
+  visibility: hidden;
+}
