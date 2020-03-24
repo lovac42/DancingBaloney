@@ -118,7 +118,10 @@ def onAfterStateChange(newS, oldS, *args):
     "This is needed to get around an issue with setting images on the toolbar."
 
     if newS == "resetRequired":
-        mw.web.bundledCSS("resetRequired.css")
+        css = mw.web.bundledCSS("resetRequired.css")
+        if CCBC:
+            css = "<style>%s</style>"%css.replace("\n","")
+        mw.web.eval(f"$(document.head).append('{css}');")
         return
 
     bg = None
