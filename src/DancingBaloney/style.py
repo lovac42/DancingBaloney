@@ -14,9 +14,6 @@ from .lib.com.lovac42.anki.version import CCBC, ANKI21
 JS_CLEAR_BG = "$(document.body).css('background','');"
 
 
-#TODO: add options for css rotate and zoom
-# transform: rotate(180deg);
-# transform: scale(0.4);
 CSS_BODY = '''
 body::before {
   background: url("%s") no-repeat center center fixed !important;
@@ -30,6 +27,7 @@ body::before {
   position: fixed;
   z-index: -99;
   will-change: transform;
+  transform: rotate(%ddeg) scale(%f);
 }
 '''
 
@@ -59,11 +57,11 @@ def setImageWithJS(webview, folder, img, theme="user_files"):
     webview.eval(js)
 
 
-def getBGImage(webview, folder, img, opacity, theme="user_files"):
+def getBGImage(webview, folder, img, opacity, rotate, zoom, theme="user_files"):
     url = _getImgUrl(webview, folder, img, theme)
     if not url:
         return ""
-    return CSS_BODY % (url, opacity/100)
+    return CSS_BODY % (url, opacity/100, rotate, zoom/100)
 
 
 def getGearImage(webview, folder, img, theme="user_files"):
@@ -118,10 +116,13 @@ def _getImgUrl(webview, folder, fname, theme):
         return url
 
 
-def getCSS(webview, color, img, opacity, theme="user_files"):
+def getCSS(webview, color, img, opacity, rotate=0, zoom=100, theme="user_files"):
     css = setBGColor(webview, color, top=False)
     if img:
-        css += getBGImage(webview, MOD_DIR, img, opacity, theme)
+        css += getBGImage(
+            webview, MOD_DIR, img, 
+            opacity, rotate, zoom, theme
+        )
     return css
 
 def setMenubarColor(tc, bc):

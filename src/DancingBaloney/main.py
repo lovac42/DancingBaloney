@@ -65,7 +65,7 @@ def themeLoader(webview, fname, theme):
             op = conf.get("theme_rev_opacity", 100)
         else:
             op = conf.get("theme_opacity", 100)
-        css = getCSS(webview, color, bg, op, theme)
+        css = getCSS(webview, color, bg, op, theme=theme)
 
         btn_bg = f"btn_{bg}"
         css += getButtonImage(webview, MOD_DIR, btn_bg, 80, theme)
@@ -107,7 +107,9 @@ def manualLoader(webview, fname):
         color = conf.get("bg_color", "#3B6EA5") #win2k default blue
         bg = conf.get("bg_img","sheep.gif")
         op = conf.get("bg_img_opacity", 100)
-        css = getCSS(webview, color, bg, op)
+        r = conf.get("mw_img_rotate", 0)
+        z = conf.get("mw_img_zoom", 100)
+        css = getCSS(webview, color, bg, op, r, z)
 
         gear_bg = conf.get("gear_img")
         css += getGearImage(webview, MOD_DIR, gear_bg)

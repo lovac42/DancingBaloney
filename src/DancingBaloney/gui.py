@@ -97,6 +97,21 @@ class SettingsDialog(QDialog):
                 "bottom_toolbar_bg_img"
             )
         )
+        f.mw_rotate_slider.valueChanged.connect(
+            lambda:self._updateSliderLabel(
+                f.mw_rotate_slider,
+                f.mw_rotate_value,
+                "mw_img", "rotate", "°"
+            )
+        )
+        f.mw_zoom_slider.valueChanged.connect(
+            lambda:self._updateSliderLabel(
+                f.mw_zoom_slider,
+                f.mw_zoom_value,
+                "mw_img", "zoom"
+            )
+        )
+
 
         # LineEdits ====================
         # f.editor.textChanged.connect(func(key,textbox))
@@ -242,7 +257,7 @@ class SettingsDialog(QDialog):
         f.theme_combobox.addItems(themeList)
         try:
             n = themeList.index(self.conf.get("theme")) + 1
-            self.tabWidget.setCurrentIndex(4)
+            self.tabWidget.setCurrentIndex(len(self.tabWidget)-1)
         except ValueError:
             n = 0
             self.tabWidget.setCurrentIndex(0)
@@ -284,6 +299,12 @@ class SettingsDialog(QDialog):
         n = self.conf.get("bottom_toolbar_bg_img_opacity", 100)
         f.btm_opacity_slider.setValue(n)
         f.btm_opacity_value.setText("% 5d%%"%n)
+        n = self.conf.get("mw_img_rotate", 0)
+        f.mw_rotate_slider.setValue(n)
+        f.mw_rotate_value.setText("% 5d°"%n)
+        n = self.conf.get("mw_img_zoom", 100)
+        f.mw_zoom_slider.setValue(n)
+        f.mw_zoom_value.setText("% 5d%%"%n)
 
         # Menubar -----------
         s = self.conf.get("menubar_txt_color", "")
@@ -300,10 +321,10 @@ class SettingsDialog(QDialog):
             self.form.theme_combobox.currentText())
         self._refresh(150)
 
-    def _updateSliderLabel(self, slider, label, key):
+    def _updateSliderLabel(self, slider, label, key, type="opacity", symbol="%"):
         n=slider.value()
-        label.setText("% 5d%%"%n)
-        self.conf.set(f"{key}_opacity", n)
+        label.setText("% 5d%s"%(n,symbol))
+        self.conf.set(f"{key}_{type}", n)
         self._refresh()
 
     def _getThemes(self):

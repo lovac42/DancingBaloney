@@ -249,7 +249,7 @@
              <number>100</number>
             </property>
             <property name="singleStep">
-             <number>10</number>
+             <number>1</number>
             </property>
             <property name="sliderPosition">
              <number>100</number>
@@ -276,12 +276,15 @@
           <item row="1" column="1">
            <widget class="QSlider" name="mw_rotate_slider">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="maximum">
              <number>360</number>
             </property>
             <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="pageStep">
              <number>90</number>
             </property>
             <property name="value">
@@ -305,15 +308,18 @@
           <item row="2" column="1">
            <widget class="QSlider" name="mw_zoom_slider">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="minimum">
              <number>25</number>
             </property>
             <property name="maximum">
-             <number>300</number>
+             <number>250</number>
             </property>
             <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="pageStep">
              <number>25</number>
             </property>
             <property name="sliderPosition">
@@ -325,7 +331,7 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="mw_rotate_value">
             <property name="minimumSize">
              <size>
               <width>35</width>
@@ -339,12 +345,12 @@
              </size>
             </property>
             <property name="text">
-             <string>0</string>
+             <string>0°</string>
             </property>
            </widget>
           </item>
           <item row="2" column="2">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="mw_zoom_value">
             <property name="minimumSize">
              <size>
               <width>35</width>
@@ -460,7 +466,7 @@
            <number>100</number>
           </property>
           <property name="singleStep">
-           <number>10</number>
+           <number>1</number>
           </property>
           <property name="sliderPosition">
            <number>100</number>
@@ -684,7 +690,7 @@
          <number>100</number>
         </property>
         <property name="singleStep">
-         <number>10</number>
+         <number>1</number>
         </property>
         <property name="sliderPosition">
          <number>90</number>
@@ -760,6 +766,9 @@
         </property>
         <property name="maximum">
          <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
         </property>
         <property name="value">
          <number>80</number>
