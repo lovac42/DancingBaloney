@@ -124,3 +124,7 @@ def getCSS(webview, color, img, opacity, theme="user_files"):
         css += getBGImage(webview, MOD_DIR, img, opacity, theme)
     return css
 
+def setMenubarColor(tc, bc):
+    css = f"color:{tc};" if tc else ""
+    css += f"background-color:{bc};" if bc else ""
+    mw.form.menubar.setStyleSheet(css)

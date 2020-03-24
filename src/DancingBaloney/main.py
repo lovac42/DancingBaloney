@@ -143,6 +143,12 @@ def onAfterStateChange(newS, oldS, *args):
         bg = conf.get("top_toolbar_bg_img")
         theme = "user_files"
 
+    #TODO: make theme specific
+    #Sets menubar colors
+    color = conf.get("menubar_txt_color")
+    bgColor = conf.get("menubar_bg_color")
+    setMenubarColor(color, bgColor)
+
     if bg:
         setImageWithJS(mw.toolbar.web, MOD_DIR, bg, theme)
 

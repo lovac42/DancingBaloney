@@ -67,6 +67,8 @@ class SettingsDialog(QDialog):
         )
 
         # Sliders
+        # f.slider.valueChanged.connect(func(slider,textbox,key))
+
         f.theme_opacity_slider.valueChanged.connect(
             lambda:self._updateSliderLabel(
                 f.theme_opacity_slider,
@@ -97,6 +99,7 @@ class SettingsDialog(QDialog):
         )
 
         # LineEdits ====================
+        # f.editor.textChanged.connect(func(key,textbox))
 
         # Themes ----------------
         f.theme_color_input.textChanged.connect(
@@ -154,7 +157,25 @@ class SettingsDialog(QDialog):
             )
         )
 
+        # Menu Toolbar -----------
+        f.menubar_text_input.textChanged.connect(
+            lambda:self._updateLineEdit(
+                "menubar_txt_color",
+                f.menubar_text_input
+            )
+        )
+        f.menubar_color_input.textChanged.connect(
+            lambda:self._updateLineEdit(
+                "menubar_bg_color",
+                f.menubar_color_input
+            )
+        )
+
+
+
         # File Buttons -------------
+        # f.button.clicked.connect(func(textbox))
+
         f.toolbar_image_button.clicked.connect(
             lambda:self._getFile(
                 f.toolbar_image_input
@@ -177,6 +198,8 @@ class SettingsDialog(QDialog):
         )
 
         # Color Buttons ------------------
+        # f.button.clicked.connect(func(textbox))
+
         f.theme_color_button.clicked.connect(
             lambda:self._chooseColor(
                 f.theme_color_input
@@ -197,6 +220,17 @@ class SettingsDialog(QDialog):
                 f.btm_color_input
             )
         )
+        f.menubar_text_button.clicked.connect(
+            lambda:self._chooseColor(
+                f.menubar_text_input
+            )
+        )
+        f.menubar_color_button.clicked.connect(
+            lambda:self._chooseColor(
+                f.menubar_color_input
+            )
+        )
+
 
 
     def loadConfigData(self):
@@ -251,6 +285,11 @@ class SettingsDialog(QDialog):
         f.btm_opacity_slider.setValue(n)
         f.btm_opacity_value.setText("% 5d%%"%n)
 
+        # Menubar -----------
+        s = self.conf.get("menubar_txt_color", "")
+        f.menubar_text_input.setText(s)
+        s = self.conf.get("menubar_bg_color", "")
+        f.menubar_color_input.setText(s)
 
     def _updateLineEdit(self, key, func):
         self.conf.set(key, func.text())
