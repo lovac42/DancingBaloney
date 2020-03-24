@@ -66,186 +66,76 @@ class SettingsDialog(QDialog):
             self._updateComboBox
         )
 
-        # Sliders
-        # f.slider.valueChanged.connect(func(slider,textbox,key))
-
-        f.theme_opacity_slider.valueChanged.connect(
-            lambda:self._updateSliderLabel(
-                f.theme_opacity_slider,
-                f.theme_opacity_value,
-                "theme"
+        # Sliders -----------------------
+        controller = {
+          # Themes ----------------
+            f.theme_opacity_slider : (f.theme_opacity_value, "theme_opacity"),
+            f.theme_rev_opacity_slider : (f.theme_rev_opacity_value, "theme_rev_opacity"),
+          # Toolbar ----------------
+            f.mw_opacity_slider : (f.mw_opacity_value, "bg_img_opacity"),
+            f.btm_opacity_slider : (f.btm_opacity_value, "bottom_toolbar_bg_img_opacity"),
+            f.mw_rotate_slider : (f.mw_rotate_value, "mw_img_rotate", "°"),
+            f.mw_zoom_slider : (f.mw_zoom_value, "mw_img_zoom"),
+        }
+        for slider,args in controller.items():
+            s = slider.value()
+            slider.valueChanged.connect(
+                lambda s=s,args=args:self._updateSliderLabel(s, *args)
             )
-        )
-        f.theme_rev_opacity_slider.valueChanged.connect(
-            lambda:self._updateSliderLabel(
-                f.theme_rev_opacity_slider,
-                f.theme_rev_opacity_value,
-                "theme_rev"
-            )
-        )
-        f.mw_opacity_slider.valueChanged.connect(
-            lambda:self._updateSliderLabel(
-                f.mw_opacity_slider,
-                f.mw_opacity_value,
-                "bg_img"
-            )
-        )
-        f.btm_opacity_slider.valueChanged.connect(
-            lambda:self._updateSliderLabel(
-                f.btm_opacity_slider,
-                f.btm_opacity_value,
-                "bottom_toolbar_bg_img"
-            )
-        )
-        f.mw_rotate_slider.valueChanged.connect(
-            lambda:self._updateSliderLabel(
-                f.mw_rotate_slider,
-                f.mw_rotate_value,
-                "mw_img", "rotate", "°"
-            )
-        )
-        f.mw_zoom_slider.valueChanged.connect(
-            lambda:self._updateSliderLabel(
-                f.mw_zoom_slider,
-                f.mw_zoom_value,
-                "mw_img", "zoom"
-            )
-        )
 
 
-        # LineEdits ====================
-        # f.editor.textChanged.connect(func(key,textbox))
-
-        # Themes ----------------
-        f.theme_color_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "theme_bg_color",
-                f.theme_color_input
+        # LineEdits -----------------------
+        controller = {
+          # Themes ----------------
+            f.theme_color_input : ("theme_bg_color",),
+          # Menu Toolbar -----------
+            f.menubar_text_input : ("menubar_txt_color",),
+            f.menubar_color_input : ("menubar_bg_color",),
+          # Toolbar ----------------
+            f.toolbar_color_input : ("top_toolbar_bg_color",),
+            f.toolbar_image_input : ("top_toolbar_bg_img",),
+            f.mw_color_input : ("bg_color",),
+            f.mw_image_input : ("bg_img",),
+            f.mw_gear_input : ("gear_img",),
+          # Bottom Toolbar ----------
+            f.btm_color_input : ("bottom_toolbar_bg_color",),
+            f.btm_image_input : ("bottom_toolbar_bg_img",),
+        }
+        for ed,args in controller.items():
+            t = ed.text()
+            ed.textChanged.connect(
+                lambda t=t,args=args:self._updateLineEdit(t,*args)
             )
-        )
-
-        # Toolbar ----------------
-        f.toolbar_color_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "top_toolbar_bg_color",
-                f.toolbar_color_input
-            )
-        )
-        f.toolbar_image_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "top_toolbar_bg_img",
-                f.toolbar_image_input
-            )
-        )
-
-        # MW ----------------
-        f.mw_color_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "bg_color",
-                f.mw_color_input
-            )
-        )
-        f.mw_image_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "bg_img",
-                f.mw_image_input
-            )
-        )
-        f.mw_gear_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "gear_img",
-                f.mw_gear_input
-            )
-        )
-
-        # Bottom Toolbar ----------
-        f.btm_color_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "bottom_toolbar_bg_color",
-                f.btm_color_input
-            )
-        )
-        f.btm_image_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "bottom_toolbar_bg_img",
-                f.btm_image_input
-            )
-        )
-
-        # Menu Toolbar -----------
-        f.menubar_text_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "menubar_txt_color",
-                f.menubar_text_input
-            )
-        )
-        f.menubar_color_input.textChanged.connect(
-            lambda:self._updateLineEdit(
-                "menubar_bg_color",
-                f.menubar_color_input
-            )
-        )
 
 
+        # Image Buttons -----------------------
+        controller = {
+            f.toolbar_image_button : (f.toolbar_image_input,),
+            f.mw_image_button : (f.mw_image_input,),
+            f.mw_gear_button : (f.mw_gear_input,),
+            f.btm_image_button : (f.btm_image_input,),
+        }
+        for btn,args in controller.items():
+            # 'a' is used to get around an issue
+            # with pything binding
+            btn.clicked.connect(
+                lambda a="a",args=args:self._getFile(a,*args)
+            )
 
-        # File Buttons -------------
-        # f.button.clicked.connect(func(textbox))
 
-        f.toolbar_image_button.clicked.connect(
-            lambda:self._getFile(
-                f.toolbar_image_input
+        # Color Buttons -----------------------
+        controller = {
+            f.theme_color_button : (f.theme_color_input,),
+            f.toolbar_color_button : (f.toolbar_color_input,),
+            f.mw_color_button : (f.mw_color_input,),
+            f.btm_color_button : (f.btm_color_input,),
+            f.menubar_text_button : (f.menubar_text_input,),
+            f.menubar_color_button : (f.menubar_color_input,),
+        }
+        for btn,args in controller.items():
+            btn.clicked.connect(
+                lambda a="a",args=args:self._chooseColor(a,*args)
             )
-        )
-        f.mw_image_button.clicked.connect(
-            lambda:self._getFile(
-                f.mw_image_input
-            )
-        )
-        f.mw_gear_button.clicked.connect(
-            lambda:self._getFile(
-                f.mw_gear_input
-            )
-        )
-        f.btm_image_button.clicked.connect(
-            lambda:self._getFile(
-                f.btm_image_input
-            )
-        )
-
-        # Color Buttons ------------------
-        # f.button.clicked.connect(func(textbox))
-
-        f.theme_color_button.clicked.connect(
-            lambda:self._chooseColor(
-                f.theme_color_input
-            )
-        )
-        f.toolbar_color_button.clicked.connect(
-            lambda:self._chooseColor(
-                f.toolbar_color_input
-            )
-        )
-        f.mw_color_button.clicked.connect(
-            lambda:self._chooseColor(
-                f.mw_color_input
-            )
-        )
-        f.btm_color_button.clicked.connect(
-            lambda:self._chooseColor(
-                f.btm_color_input
-            )
-        )
-        f.menubar_text_button.clicked.connect(
-            lambda:self._chooseColor(
-                f.menubar_text_input
-            )
-        )
-        f.menubar_color_button.clicked.connect(
-            lambda:self._chooseColor(
-                f.menubar_color_input
-            )
-        )
-
 
 
     def loadConfigData(self):
@@ -312,8 +202,8 @@ class SettingsDialog(QDialog):
         s = self.conf.get("menubar_bg_color", "")
         f.menubar_color_input.setText(s)
 
-    def _updateLineEdit(self, key, func):
-        self.conf.set(key, func.text())
+    def _updateLineEdit(self, text, key):
+        self.conf.set(key, text)
         self._refresh()
 
     def _updateComboBox(self):
@@ -321,17 +211,16 @@ class SettingsDialog(QDialog):
             self.form.theme_combobox.currentText())
         self._refresh(150)
 
-    def _updateSliderLabel(self, slider, label, key, type="opacity", symbol="%"):
-        n=slider.value()
-        label.setText("% 5d%s"%(n,symbol))
-        self.conf.set(f"{key}_{type}", n)
+    def _updateSliderLabel(self, num, label, key, symbol="%"):
+        label.setText("% 5d%s"%(num, symbol))
+        self.conf.set(key, num)
         self._refresh()
 
     def _getThemes(self):
         d = f"{ADDON_PATH}/theme"
         return [x for x in os.listdir(d) if os.path.isdir(os.path.join(d, x))]
 
-    def _getFile(self, lineEditor):
+    def _getFile(self, pad, lineEditor):
         def setWallpaper(path):
             f = path.split("user_files/")[-1]
             lineEditor.setText(f)
@@ -341,7 +230,7 @@ class SettingsDialog(QDialog):
             dir=f"{ADDON_PATH}/user_files"
         )
 
-    def _chooseColor(self, lineEditor):
+    def _chooseColor(self, pad, lineEditor):
         def liveColor(qcolor):
             if qcolor.isValid():
                 self.lastColor=qcolor
