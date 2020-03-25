@@ -238,10 +238,10 @@ class SettingsDialog(QDialog):
         n = self.conf.get("mw_img_translateY", 0)
         f.mw_translateY_slider.setValue(n)
         f.mw_translateY_value.setText(str(n))
-        n = self.conf.get("mw_img_scaleX", False)
-        f.mw_flipH_checkbox.setChecked(n)
-        n = self.conf.get("mw_img_scaleY", False)
-        f.mw_flipV_checkbox.setChecked(n)
+        n = self.conf.get("mw_img_scaleX", 1)
+        f.mw_flipH_checkbox.setChecked(n==-1)
+        n = self.conf.get("mw_img_scaleY", 1)
+        f.mw_flipV_checkbox.setChecked(n==-1)
 
         # Menubar -----------
         s = self.conf.get("menubar_txt_color", "")
