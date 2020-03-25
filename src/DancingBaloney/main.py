@@ -90,15 +90,16 @@ def themeLoader(webview, fname, theme):
             op = 100
             color = ""
         elif mw.state == "review":
-            op = conf.get("theme_rev_opacity", 100)
+            op = conf.get("theme_rev_opacity", 80)
         elif mw.state == "resetRequired":
             if beforeResetState == 'review':
-                op = conf.get("theme_rev_opacity", 100)
+                op = conf.get("theme_rev_opacity", 80)
             else:
-                op = conf.get("theme_opacity", 100)
+                op = conf.get("theme_opacity", 90)
                 bg = "alt_" + bg
+            op = max(1, op-10)
         else:
-            op = conf.get("theme_opacity", 100)
+            op = conf.get("theme_opacity", 90)
 
         css = getCSS(webview, color, bg, op, DEFAULT_TRANSFORM, theme=theme)
 
@@ -116,7 +117,7 @@ def themeLoader(webview, fname, theme):
 def manualLoader(webview, fname):
     css = ""
 
-    if mw.state == "review":
+    if mw.state == "review" and conf.get("show_bg_in_reviewer", 1)==1:
         # One or the other, targets different versions
         clearBackground(webview)
         clearBackground(mw.toolbar.web)
@@ -130,11 +131,26 @@ def manualLoader(webview, fname):
         #Note: Images for toolbar is set in onAfterStateChange
         #      after page has been loaded.
 
-    elif fname in ("deckbrowser.css","overview.css","resetRequired.css"):
+    elif fname in (
+        "deckbrowser.css","overview.css",
+        "resetRequired.css","reviewer.css"
+    ):
         #TODO: sep settings for overview
         color = conf.get("bg_color", "#3B6EA5") #win2k default blue
         bg = conf.get("bg_img","sheep.gif")
-        op = conf.get("bg_img_opacity", 100)
+
+        if mw.state == "review":
+            op = conf.get("bg_reviewer_opacity", 80)
+        elif mw.state == "resetRequired":
+            if beforeResetState == 'review':
+                op = conf.get("bg_reviewer_opacity", 80)
+            else:
+                op = conf.get("bg_img_opacity", 90)
+                bg = "alt_" + bg
+            op = max(1, op-10)
+        else:
+            op = conf.get("bg_img_opacity", 90)
+
         r = conf.get("mw_img_rotate", 0)
         z = conf.get("mw_img_zoom", 100)
         tx = conf.get("mw_img_translateX", 0)
@@ -167,7 +183,7 @@ def onAfterStateChange(newS, oldS, *args):
     if theme:
         bg = f"{newS}_toolbar.jpg"
         theme = f"theme/{theme}"
-    elif newS == "review":
+    elif newS == "review" and conf.get("show_bg_in_reviewer", 1)==1:
         clearBackground(mw.toolbar.web)
     else:
         bg = conf.get("top_toolbar_bg_img")

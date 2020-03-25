@@ -100,6 +100,9 @@ class SettingsDialog(QDialog):
         f.mw_flipV_checkbox.stateChanged.connect(
             lambda:self._updateCheckbox(f.mw_flipV_checkbox, "mw_img_scaleY")
         )
+        f.bg_reviewer_checkbox.stateChanged.connect(
+            lambda:self._updateCheckbox(f.bg_reviewer_checkbox, "show_bg_in_reviewer")
+        )
 
         # Sliders -----------------------
         controller = {
@@ -113,6 +116,7 @@ class SettingsDialog(QDialog):
             f.mw_zoom_slider : (f.mw_zoom_value, "mw_img_zoom"),
             f.mw_translateX_slider : (f.mw_translateX_value, "mw_img_translateX", "%d"),
             f.mw_translateY_slider : (f.mw_translateY_value, "mw_img_translateY", "%d"),
+            f.rev_opacity_slider : (f.rev_opacity_value, "bg_reviewer_opacity", "%d"),
         }
         for slider,args in controller.items():
             s = slider.value()
@@ -190,11 +194,11 @@ class SettingsDialog(QDialog):
             self.tabWidget.setCurrentIndex(0)
         f.theme_combobox.setCurrentIndex(n)
 
-        n = self.conf.get("theme_opacity", 100)
+        n = self.conf.get("theme_opacity", 90)
         f.theme_opacity_slider.setValue(n)
         f.theme_opacity_value.setText("% 5d%%"%n)
 
-        n = self.conf.get("theme_rev_opacity", 100)
+        n = self.conf.get("theme_rev_opacity", 80)
         f.theme_rev_opacity_slider.setValue(n)
         f.theme_rev_opacity_value.setText("% 5d%%"%n)
 
@@ -248,6 +252,15 @@ class SettingsDialog(QDialog):
         f.menubar_text_input.setText(s)
         s = self.conf.get("menubar_bg_color", "")
         f.menubar_color_input.setText(s)
+
+        # Reviewer ----------
+        n = self.conf.get("show_bg_in_reviewer", 1)
+        f.bg_reviewer_checkbox.setChecked(n==-1)
+
+        n = self.conf.get("bg_reviewer_opacity", 80)
+        f.rev_opacity_slider.setValue(n)
+        f.rev_opacity_value.setText("% 5d%%"%n)
+
 
     def _updateLineEdit(self, text, key):
         self.conf.set(key, text)
