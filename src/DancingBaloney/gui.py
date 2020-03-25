@@ -70,6 +70,12 @@ class SettingsDialog(QDialog):
             self.form.mw_zoom_label.setEnabled(False)
             self.form.mw_zoom_slider.setEnabled(False)
             self.form.mw_zoom_value.setEnabled(False)
+            self.form.mw_translateX_slider.setEnabled(False)
+            self.form.mw_translateX_value.setEnabled(False)
+            self.form.mw_translateY_slider.setEnabled(False)
+            self.form.mw_translateY_value.setEnabled(False)
+            self.form.mw_flipH_checkbox.setEnabled(False)
+            self.form.mw_flipV_checkbox.setEnabled(False)
 
     def reject(self):
         self.accept()
@@ -87,6 +93,14 @@ class SettingsDialog(QDialog):
             self._updateComboBox
         )
 
+        # Checkboxes
+        f.mw_flipH_checkbox.stateChanged.connect(
+            lambda:self._updateCheckbox(f.mw_flipH_checkbox, "mw_img_scaleX")
+        )
+        f.mw_flipV_checkbox.stateChanged.connect(
+            lambda:self._updateCheckbox(f.mw_flipV_checkbox, "mw_img_scaleY")
+        )
+
         # Sliders -----------------------
         controller = {
           # Themes ----------------
@@ -95,8 +109,10 @@ class SettingsDialog(QDialog):
           # Toolbar ----------------
             f.mw_opacity_slider : (f.mw_opacity_value, "bg_img_opacity"),
             f.btm_opacity_slider : (f.btm_opacity_value, "bottom_toolbar_bg_img_opacity"),
-            f.mw_rotate_slider : (f.mw_rotate_value, "mw_img_rotate", "°"),
+            f.mw_rotate_slider : (f.mw_rotate_value, "mw_img_rotate", "% 5d°"),
             f.mw_zoom_slider : (f.mw_zoom_value, "mw_img_zoom"),
+            f.mw_translateX_slider : (f.mw_translateX_value, "mw_img_translateX", "%d"),
+            f.mw_translateY_slider : (f.mw_translateY_value, "mw_img_translateY", "%d"),
         }
         for slider,args in controller.items():
             s = slider.value()
@@ -216,6 +232,16 @@ class SettingsDialog(QDialog):
         n = self.conf.get("mw_img_zoom", 100)
         f.mw_zoom_slider.setValue(n)
         f.mw_zoom_value.setText("% 5d%%"%n)
+        n = self.conf.get("mw_img_translateX", 0)
+        f.mw_translateX_slider.setValue(n)
+        f.mw_translateX_value.setText(str(n))
+        n = self.conf.get("mw_img_translateY", 0)
+        f.mw_translateY_slider.setValue(n)
+        f.mw_translateY_value.setText(str(n))
+        n = self.conf.get("mw_img_scaleX", False)
+        f.mw_flipH_checkbox.setChecked(n)
+        n = self.conf.get("mw_img_scaleY", False)
+        f.mw_flipV_checkbox.setChecked(n)
 
         # Menubar -----------
         s = self.conf.get("menubar_txt_color", "")
@@ -232,8 +258,8 @@ class SettingsDialog(QDialog):
             self.form.theme_combobox.currentText())
         self._refresh(150)
 
-    def _updateSliderLabel(self, num, label, key, symbol="%"):
-        label.setText("% 5d%s"%(num, symbol))
+    def _updateSliderLabel(self, num, label, key, format="% 5d%%"):
+        label.setText(format%num)
         self.conf.set(key, num)
         self._refresh()
 
@@ -268,6 +294,10 @@ class SettingsDialog(QDialog):
         form.color.currentColorChanged.connect(liveColor)
         diag.show()
 
+    def _updateCheckbox(self, func, key):
+        n = -1 if func.isChecked() else 1
+        self.conf.set(key, n)
+        self._refresh()
 
     def _refresh(self, ms=100):
         if self.timer:

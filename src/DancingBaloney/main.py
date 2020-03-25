@@ -94,7 +94,7 @@ def themeLoader(webview, fname, theme):
             op = conf.get("theme_rev_opacity", 100)
         else:
             op = conf.get("theme_opacity", 100)
-        css = getCSS(webview, color, bg, op, theme=theme)
+        css = getCSS(webview, color, bg, op, (0,100,0,0,1,1), theme=theme)
 
         btn_bg = f"btn_{bg}"
         css += getButtonImage(webview, MOD_DIR, btn_bg, 80, theme)
@@ -131,7 +131,11 @@ def manualLoader(webview, fname):
         op = conf.get("bg_img_opacity", 100)
         r = conf.get("mw_img_rotate", 0)
         z = conf.get("mw_img_zoom", 100)
-        css = getCSS(webview, color, bg, op, r, z)
+        tx = conf.get("mw_img_translateX", 0)
+        ty = - conf.get("mw_img_translateY", 0)
+        sx = conf.get("mw_img_scaleX", 1)
+        sy = conf.get("mw_img_scaleY", 1)
+        css = getCSS(webview, color, bg, op, (r,z,tx,ty,sx,sy))
 
         gear_bg = conf.get("gear_img")
         css += getGearImage(webview, MOD_DIR, gear_bg)
@@ -140,7 +144,7 @@ def manualLoader(webview, fname):
         color = conf.get("bottom_toolbar_bg_color", "#3B6EA5")
         bg = conf.get("bottom_toolbar_bg_img")
         op = conf.get("bottom_toolbar_bg_img_opacity", 100)
-        css = getCSS(webview, color, bg, op)
+        css = getCSS(webview, color, bg, op, (0,100,0,0,1,1))
 
     custom_css = conf.get(f"custom_{fname[:-4]}_style")
     return css, custom_css
