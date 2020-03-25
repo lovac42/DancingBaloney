@@ -4,6 +4,7 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 
 
+import sys
 import aqt
 from aqt import mw
 from anki.hooks import wrap, addHook
@@ -24,6 +25,30 @@ mang = Manager(conf)
 def bundledCSS(webview, fname, _old):
     ret = None
     theme = conf.get("theme")
+
+    if not isinstance(webview, aqt.editor.EditorWebView):
+        if mw.state == "resetRequired" and fname == "webview.css":
+        # Filter out webview.css call by browser editor, editor, and clayout
+            for i in range (1,12):
+            #Filter out webview called from resetState in mw only
+                try:
+                    if "resetRequiredState" in sys._getframe(i).f_code.co_name:
+                        fname = "resetRequired.css"
+                except ValueError:
+                    break
+        elif fname == "reviewer.css":
+        #Filter out reviewer.css called by clayout and preview
+            for i in range (1,16):
+                try:
+                    if sys._getframe(i).f_code.co_name in (
+                        "_onCardLayout", "_setupPreviewWebview",
+                        "renderPreview", "_renderPreview"
+                    ):
+                        return _old(webview, fname)
+                except ValueError:
+                    break
+
+
     if theme:
         theme = f"theme/{theme}"
         css, custom_css = themeLoader(webview, fname, theme)
@@ -50,9 +75,9 @@ def themeLoader(webview, fname, theme):
 
     if fname in (
         "deckbrowser.css","overview.css","reviewer.css",
-        "toolbar-bottom.css","reviewer-bottom.css"
+        "toolbar-bottom.css","reviewer-bottom.css",
+        "resetRequired.css"
     ):
-
         color = conf.get("theme_bg_color", "")
         bg = f"{mw.state}_{fname[:-4]}.jpg"
 
@@ -74,10 +99,6 @@ def themeLoader(webview, fname, theme):
             gear_bg = f"gear.png"
             css += getGearImage(webview, MOD_DIR, gear_bg, theme)
 
-    elif fname == "resetRequired.css":
-        bg = f"{mw.state}_{fname[:-4]}.jpg"
-        setImageWithJS(webview, MOD_DIR, bg, theme)
-
     return css, fname
 
 
@@ -85,11 +106,7 @@ def themeLoader(webview, fname, theme):
 def manualLoader(webview, fname):
     css = ""
 
-    if fname == "resetRequired.css":
-        bg = conf.get("bg_img")
-        setImageWithJS(webview, MOD_DIR, bg)
-
-    elif mw.state == "review":
+    if mw.state == "review":
         # One or the other, targets different versions
         clearBackground(webview)
         clearBackground(mw.toolbar.web)
@@ -103,7 +120,7 @@ def manualLoader(webview, fname):
         #Note: Images for toolbar is set in onAfterStateChange
         #      after page has been loaded.
 
-    elif fname in ("deckbrowser.css","overview.css"):
+    elif fname in ("deckbrowser.css","overview.css","resetRequired.css"):
         #TODO: sep settings for overview
         color = conf.get("bg_color", "#3B6EA5") #win2k default blue
         bg = conf.get("bg_img","sheep.gif")
@@ -127,13 +144,6 @@ def manualLoader(webview, fname):
 
 def onAfterStateChange(newS, oldS, *args):
     "This is needed to get around an issue with setting images on the toolbar."
-
-    if newS == "resetRequired":
-        css = mw.web.bundledCSS("resetRequired.css")
-        if CCBC:
-            css = "<style>%s</style>"%css.replace("\n","")
-        mw.web.eval(f"$(document.head).append('{css}');")
-        return
 
     bg = None
     theme = conf.get("theme")
