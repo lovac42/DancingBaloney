@@ -13,7 +13,14 @@ ANKI21_OLD = POINT_VERSION < 20
 
 ADDON_NAME = "DancingBaloney"
 
-MOD_DIR = setWebExports(r".*\.(gif|a?png|jpe?g|svg|ico|bmp|css)$")
+RE_BG_IMG_EXT = "*.gif *.png *.apng *.jpg *.jpeg *.svg *.ico *.bmp"
+
+RE_MEDIA_TYPE = r".*\.(gif|a?png|jpe?g|svg|ico|bmp|css)$"
+
+MOD_DIR = setWebExports(RE_MEDIA_TYPE)
 
 ADDON_PATH = getAbsolutePath(__file__)
+
+
+DEFAULT_TRANSFORM = (0,100,0,0,1,1)
 

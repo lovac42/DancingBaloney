@@ -12,7 +12,7 @@ from aqt.utils import getFile
 from .lib.com.lovac42.anki.gui import toolbar
 from .forms.settings import Ui_Settings
 from .forms import getcolor
-from .const import ADDON_PATH
+from .const import ADDON_PATH, RE_BG_IMG_EXT
 
 from .lib.com.lovac42.anki.version import CCBC
 
@@ -274,6 +274,7 @@ class SettingsDialog(QDialog):
 
         f = getFile(mw, "Wallpaper",
             cb=setWallpaper,
+            filter=RE_BG_IMG_EXT,
             dir=f"{ADDON_PATH}/user_files"
         )
 
