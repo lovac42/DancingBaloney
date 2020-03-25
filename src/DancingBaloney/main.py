@@ -22,6 +22,9 @@ from .gui import Manager
 mang = Manager(conf)
 
 
+beforeResetState = "deckBrowser"
+
+
 def bundledCSS(webview, fname, _old):
     ret = None
     theme = conf.get("theme")
@@ -86,7 +89,8 @@ def themeLoader(webview, fname, theme):
         if "bottom" in fname:
             op = 100
             color = ""
-        elif mw.state == "review":
+        elif mw.state == "review" or \
+        (mw.state == "resetRequired" and beforeResetState == 'review'):
             op = conf.get("theme_rev_opacity", 100)
         else:
             op = conf.get("theme_opacity", 100)
@@ -144,6 +148,9 @@ def manualLoader(webview, fname):
 
 def onAfterStateChange(newS, oldS, *args):
     "This is needed to get around an issue with setting images on the toolbar."
+
+    global beforeResetState
+    beforeResetState = newS
 
     bg = None
     theme = conf.get("theme")
