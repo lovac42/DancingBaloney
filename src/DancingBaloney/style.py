@@ -4,7 +4,7 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 
 
-import os
+import os, re
 from aqt import mw
 
 from .const import *
@@ -109,7 +109,11 @@ def getCustomPath(fname, theme="user_files"):
 
 
 def _getImgUrl(webview, folder, fname, theme):
-    if fname and os.path.exists(f"{ADDON_PATH}/{theme}/{fname}"):
+    if fname:
+        if not os.path.exists(f"{ADDON_PATH}/{theme}/{fname}"):
+            fname = re.sub(r"^alt_","",fname)
+            if not os.path.exists(f"{ADDON_PATH}/{theme}/{fname}"):
+                return
         path = f"{folder}/{theme}/{fname}"
         url = webview.webBundlePath(path)
         if ANKI21:

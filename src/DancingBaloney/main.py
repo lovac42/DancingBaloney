@@ -89,11 +89,17 @@ def themeLoader(webview, fname, theme):
         if "bottom" in fname:
             op = 100
             color = ""
-        elif mw.state == "review" or \
-        (mw.state == "resetRequired" and beforeResetState == 'review'):
+        elif mw.state == "review":
             op = conf.get("theme_rev_opacity", 100)
+        elif mw.state == "resetRequired":
+            if beforeResetState == 'review':
+                op = conf.get("theme_rev_opacity", 100)
+            else:
+                op = conf.get("theme_opacity", 100)
+                bg = "alt_" + bg
         else:
             op = conf.get("theme_opacity", 100)
+
         css = getCSS(webview, color, bg, op, DEFAULT_TRANSFORM, theme=theme)
 
         btn_bg = f"btn_{bg}"
