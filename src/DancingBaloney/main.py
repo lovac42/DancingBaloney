@@ -95,10 +95,11 @@ def manualLoader(webview, fname):
         clearBackground(mw.toolbar.web)
 
     elif fname == "toolbar.css" and mw.state == "deckBrowser":
-        clearBackground(mw.toolbar.web)
-
+        if not conf.get("top_toolbar_bg_img"):
+            clearBackground(mw.toolbar.web)
         color = conf.get("top_toolbar_bg_color", "#F6FFE9")
-        css = setBGColor(webview, color, top=True)
+        if color:
+            css = setBGColor(webview, color, top=True)
         #Note: Images for toolbar is set in onAfterStateChange
         #      after page has been loaded.
 
