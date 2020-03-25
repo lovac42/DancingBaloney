@@ -15,6 +15,8 @@ from .forms import getcolor
 from .const import ADDON_PATH
 
 class Manager:
+    shown = False
+
     def __init__(self, conf):
         self.conf = conf
         self.setupMenu()
@@ -26,18 +28,25 @@ class Manager:
         m.addAction(a)
 
     def show(self):
-        s = SettingsDialog(self.conf)
-        s.show()
+        if not self.shown:
+            self.shown = True
+            s = SettingsDialog(self.conf, self.reset)
+            s.show()
+
+    def reset(self):
+        self.shown = False
+
 
 
 class SettingsDialog(QDialog):
     lastColor = QColor("white") #initialize color wheel on blank fields
     timer = None
 
-    def __init__(self, conf):
+    def __init__(self, conf, callback):
         QDialog.__init__(self, mw, Qt.Window)
         mw.setupDialogGC(self)
         self.conf = conf
+        self.cleanup = callback
         self.setupDialog()
         self.loadConfigData()
         self.setupConnections()
@@ -57,6 +66,7 @@ class SettingsDialog(QDialog):
     def accept(self):
         self.conf.save()
         QDialog.accept(self)
+        self.cleanup()
 
     def setupConnections(self):
         f = self.form
