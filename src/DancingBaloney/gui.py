@@ -14,6 +14,9 @@ from .forms.settings import Ui_Settings
 from .forms import getcolor
 from .const import ADDON_PATH
 
+from .lib.com.lovac42.anki.version import CCBC
+
+
 class Manager:
     shown = False
 
@@ -59,6 +62,14 @@ class SettingsDialog(QDialog):
         self.tabWidget.setObjectName("tabWidget")
         self.form = Ui_Settings()
         self.form.setupUi(self.tabWidget)
+
+        if CCBC:
+            self.form.mw_rotate_label.setEnabled(False)
+            self.form.mw_rotate_slider.setEnabled(False)
+            self.form.mw_rotate_value.setEnabled(False)
+            self.form.mw_zoom_label.setEnabled(False)
+            self.form.mw_zoom_slider.setEnabled(False)
+            self.form.mw_zoom_value.setEnabled(False)
 
     def reject(self):
         self.accept()
