@@ -99,7 +99,7 @@ def themeLoader(webview, fname, theme):
         btn_bg = f"btn_{bg}"
         css += getButtonImage(webview, MOD_DIR, btn_bg, 80, theme)
 
-        if ANKI21 and "deckbr" in fname:
+        if "deckbr" in fname:
             gear_bg = f"gear.png"
             css += getGearImage(webview, MOD_DIR, gear_bg, theme)
 
