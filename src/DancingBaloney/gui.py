@@ -141,6 +141,13 @@ class SettingsDialog(QDialog):
           # Bottom Toolbar ----------
             f.btm_color_input : ("bottom_toolbar_bg_color",),
             f.btm_image_input : ("bottom_toolbar_bg_img",),
+          # CSS Overwrite ------------
+            f.css_db_input : ("custom_deckbrowser_style",),
+            f.css_ov_input : ("custom_overview_style",),
+            f.css_rev_input : ("custom_reviewer_style",),
+            f.css_web_input : ("custom_webview_style",),
+            f.css_tb_input : ("custom_toolbar_style",),
+            f.css_tbbtm_input : ("custom_toolbar-bottom_style",),
         }
         for ed,args in controller.items():
             t = ed.text()
@@ -149,12 +156,20 @@ class SettingsDialog(QDialog):
             )
 
 
-        # Image Buttons -----------------------
+        # File Buttons -----------------------
         controller = {
+          # Image Buttons -----------------------
             f.toolbar_image_button : (f.toolbar_image_input,),
             f.mw_image_button : (f.mw_image_input,),
             f.mw_gear_button : (f.mw_gear_input,),
             f.btm_image_button : (f.btm_image_input,),
+          # CSS Overwrite ------------
+            f.css_db_button : (f.css_db_input,"*.css"),
+            f.css_ov_button : (f.css_ov_input,"*.css"),
+            f.css_rev_button : (f.css_rev_input,"*.css"),
+            f.css_web_button : (f.css_web_input,"*.css"),
+            f.css_tb_button : (f.css_tb_input,"*.css"),
+            f.css_tbbtm_button : (f.css_tbbtm_input,"*.css"),
         }
         for btn,args in controller.items():
             # 'a' is used to get around an issue
@@ -164,7 +179,7 @@ class SettingsDialog(QDialog):
             )
 
 
-        # Color Buttons -----------------------
+        # Color Wheel -----------------------
         controller = {
             f.theme_color_button : (f.theme_color_input,),
             f.toolbar_color_button : (f.toolbar_color_input,),
@@ -256,10 +271,23 @@ class SettingsDialog(QDialog):
         # Reviewer ----------
         n = self.conf.get("show_bg_in_reviewer", 1)
         f.bg_reviewer_checkbox.setChecked(n==-1)
-
         n = self.conf.get("bg_reviewer_opacity", 80)
         f.rev_opacity_slider.setValue(n)
         f.rev_opacity_value.setText("% 5d%%"%n)
+
+        # Custom CSS -----------
+        s = self.conf.get("custom_deckbrowser_style", "")
+        f.css_db_input.setText(s)
+        s = self.conf.get("custom_overview_style", "")
+        f.css_ov_input.setText(s)
+        s = self.conf.get("custom_reviewer_style", "")
+        f.css_rev_input.setText(s)
+        s = self.conf.get("custom_webview_style", "")
+        f.css_web_input.setText(s)
+        s = self.conf.get("custom_toolbar_style", "")
+        f.css_tb_input.setText(s)
+        s = self.conf.get("custom_toolbar-bottom_style", "")
+        f.css_tbbtm_input.setText(s)
 
 
     def _updateLineEdit(self, text, key):
@@ -280,14 +308,14 @@ class SettingsDialog(QDialog):
         d = f"{ADDON_PATH}/theme"
         return [x for x in os.listdir(d) if os.path.isdir(os.path.join(d, x))]
 
-    def _getFile(self, pad, lineEditor):
+    def _getFile(self, pad, lineEditor, ext=RE_BG_IMG_EXT):
         def setWallpaper(path):
             f = path.split("user_files/")[-1]
             lineEditor.setText(f)
 
         f = getFile(mw, "Wallpaper",
             cb=setWallpaper,
-            filter=RE_BG_IMG_EXT,
+            filter=ext,
             dir=f"{ADDON_PATH}/user_files"
         )
 

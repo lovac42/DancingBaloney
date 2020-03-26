@@ -12,6 +12,6 @@
 from ..lib.com.lovac42.anki.version import ANKI21 
 
 if ANKI21:
-    from PyQt5 import QtCore, QtWidgets
+    from PyQt5 import QtCore, QtGui, QtWidgets
 else:
-    from PyQt4 import QtCore, QtGui as QtWidgets
+    from PyQt4 import QtCore, QtGui, QtGui as QtWidgets
