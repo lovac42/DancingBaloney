@@ -3,7 +3,7 @@ set ZIP=C:\PROGRA~1\7-Zip\7z.exe a -tzip -y -r
 set REPO=DancingBaloney
 set NAME=Dancing Baloney
 set PACKID=378638814
-set VERSION=0.3.0
+set VERSION=0.4.0
 
 
 quick_manifest.exe "%NAME%" "%PACKID%" >%REPO%\manifest.json
