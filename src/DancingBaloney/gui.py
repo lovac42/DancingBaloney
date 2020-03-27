@@ -116,7 +116,7 @@ class SettingsDialog(QDialog):
             f.mw_zoom_slider : (f.mw_zoom_value, "mw_img_zoom"),
             f.mw_translateX_slider : (f.mw_translateX_value, "mw_img_translateX", "%d"),
             f.mw_translateY_slider : (f.mw_translateY_value, "mw_img_translateY", "%d"),
-            f.rev_opacity_slider : (f.rev_opacity_value, "bg_reviewer_opacity", "%d"),
+            f.rev_opacity_slider : (f.rev_opacity_value, "bg_reviewer_opacity"),
         }
         for slider,args in controller.items():
             s = slider.value()
