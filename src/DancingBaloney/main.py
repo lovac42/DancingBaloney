@@ -199,6 +199,48 @@ def onAfterStateChange(newS, oldS, *args):
         setImageWithJS(mw.toolbar.web, MOD_DIR, bg, theme)
 
 
+
+# ===== Toolbar ========
+
+def hideBottomToolbar(self, buf, *args, **kwargs):
+    old = kwargs.pop('_old')
+    if not conf.get("hide_bottom_toolbar", 1)==-1:
+        return old(self, buf, *args, **kwargs)
+
+    self.web.setFixedHeight(0)
+    block = (self._centerBody % buf) + """
+<style>
+#header {
+  position: fixed;
+  bottom: 0;
+  padding: 9px;
+}
+
+button{
+    border: solid 1px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    padding: 1px;
+    margin-right: 2px;
+    min-width: 80px;
+    opacity: .8;
+}
+</style>
+"""
+    block = block.replace("'","\\'").replace("\n","")
+    js = f"""$(document.body).append('{block}');"""
+    self.mw.web.eval(js)
+
+
+
+aqt.toolbar.BottomBar.draw = wrap(
+    aqt.toolbar.BottomBar.draw,
+    hideBottomToolbar,
+    "around"
+)
+
+
 # ===== EXEC ===========
 
 def onProfileLoaded():
@@ -207,6 +249,11 @@ def onProfileLoaded():
         bundledCSS,
         "around"
     )
+    if conf.get("hide_bottom_toolbar", 1)==-1:
+        mw.progress.timer(100,
+            lambda:mw.bottomWeb.setFixedHeight(0),
+            False
+        )
     mw.reset(True)
     addHook(f"{ADDON_NAME}.configUpdated", lambda:mw.reset(True))
 

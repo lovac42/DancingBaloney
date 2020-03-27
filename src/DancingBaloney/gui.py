@@ -94,15 +94,16 @@ class SettingsDialog(QDialog):
         )
 
         # Checkboxes
-        f.mw_flipH_checkbox.stateChanged.connect(
-            lambda:self._updateCheckbox(f.mw_flipH_checkbox, "mw_img_scaleX")
-        )
-        f.mw_flipV_checkbox.stateChanged.connect(
-            lambda:self._updateCheckbox(f.mw_flipV_checkbox, "mw_img_scaleY")
-        )
-        f.bg_reviewer_checkbox.stateChanged.connect(
-            lambda:self._updateCheckbox(f.bg_reviewer_checkbox, "show_bg_in_reviewer")
-        )
+        controller = {
+            f.mw_flipH_checkbox: ("mw_img_scaleX",),
+            f.mw_flipV_checkbox: ("mw_img_scaleY",),
+            f.bg_reviewer_checkbox: ("show_bg_in_reviewer",),
+            f.btm_hide_checkbox: ("hide_bottom_toolbar",),
+        }
+        for cb,args in controller.items():
+            cb.stateChanged.connect(
+                lambda cb=cb,args=args:self._updateCheckbox(cb, *args)
+            )
 
         # Sliders -----------------------
         controller = {
@@ -245,6 +246,10 @@ class SettingsDialog(QDialog):
         n = self.conf.get("bottom_toolbar_bg_img_opacity", 100)
         f.btm_opacity_slider.setValue(n)
         f.btm_opacity_value.setText("% 5d%%"%n)
+        n = self.conf.get("hide_bottom_toolbar", 1)
+        f.btm_hide_checkbox.setChecked(n==-1)
+
+        # image op checkboxes --------------
         n = self.conf.get("mw_img_rotate", 0)
         f.mw_rotate_slider.setValue(n)
         f.mw_rotate_value.setText("% 5d°"%n)
@@ -336,8 +341,8 @@ class SettingsDialog(QDialog):
         form.color.currentColorChanged.connect(liveColor)
         diag.show()
 
-    def _updateCheckbox(self, func, key):
-        n = -1 if func.isChecked() else 1
+    def _updateCheckbox(self, cb, key):
+        n = -1 if cb==2 else 1
         self.conf.set(key, n)
         self._refresh()
 

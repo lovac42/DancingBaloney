@@ -383,6 +383,15 @@ class Ui_Settings(object):
         self.btm_image_button.setFont(font)
         self.btm_image_button.setObjectName("btm_image_button")
         self.btm_grid_layout.addWidget(self.btm_image_button, 1, 2, 1, 1)
+        self.btm_hide_checkbox = QtWidgets.QCheckBox(self.gridLayoutWidget_2)
+        self.btm_hide_checkbox.setMaximumSize(QtCore.QSize(50, 16777215))
+        font = QtGui.QFont()
+        font.setBold(False)
+        font.setItalic(True)
+        font.setWeight(50)
+        self.btm_hide_checkbox.setFont(font)
+        self.btm_hide_checkbox.setObjectName("btm_hide_checkbox")
+        self.btm_grid_layout.addWidget(self.btm_hide_checkbox, 3, 2, 1, 1)
         self.menubar_groupbox = QtWidgets.QGroupBox(self.Wallpaper)
         self.menubar_groupbox.setGeometry(QtCore.QRect(239, 10, 141, 91))
         font = QtGui.QFont()
@@ -827,7 +836,7 @@ class Ui_Settings(object):
         Settings.addTab(self.Themes, "")
 
         self.retranslateUi(Settings)
-        Settings.setCurrentIndex(1)
+        Settings.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
@@ -862,6 +871,7 @@ class Ui_Settings(object):
         self.btm_opacity_value.setText(_translate("Settings", "100%"))
         self.btm_color_button.setText(_translate("Settings", "Colors"))
         self.btm_image_button.setText(_translate("Settings", "Browse"))
+        self.btm_hide_checkbox.setText(_translate("Settings", "Hide"))
         self.menubar_groupbox.setTitle(_translate("Settings", "Menu Toolbar"))
         self.menubar_text_label.setText(_translate("Settings", "Text:   "))
         self.menubar_color_label.setText(_translate("Settings", "BGnd:"))
