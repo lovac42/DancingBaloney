@@ -12,7 +12,7 @@ from aqt.utils import getFile
 from .lib.com.lovac42.anki.gui import toolbar
 from .forms.settings import Ui_Settings
 from .forms import getcolor
-from .const import ADDON_PATH, RE_BG_IMG_EXT
+from .const import ADDON_PATH, RE_BG_IMG_EXT, CB_CHECKED, CB_UNCHECKED
 
 from .lib.com.lovac42.anki.version import CCBC
 
@@ -246,8 +246,8 @@ class SettingsDialog(QDialog):
         n = self.conf.get("bottom_toolbar_bg_img_opacity", 100)
         f.btm_opacity_slider.setValue(n)
         f.btm_opacity_value.setText("% 5d%%"%n)
-        n = self.conf.get("hide_bottom_toolbar", 1)
-        f.btm_hide_checkbox.setChecked(n==-1)
+        n = self.conf.get("hide_bottom_toolbar", CB_UNCHECKED)
+        f.btm_hide_checkbox.setChecked(n==CB_CHECKED)
 
         # image op checkboxes --------------
         n = self.conf.get("mw_img_rotate", 0)
@@ -262,10 +262,10 @@ class SettingsDialog(QDialog):
         n = self.conf.get("mw_img_translateY", 0)
         f.mw_translateY_slider.setValue(n)
         f.mw_translateY_value.setText(str(n))
-        n = self.conf.get("mw_img_scaleX", 1)
-        f.mw_flipH_checkbox.setChecked(n==-1)
-        n = self.conf.get("mw_img_scaleY", 1)
-        f.mw_flipV_checkbox.setChecked(n==-1)
+        n = self.conf.get("mw_img_scaleX", CB_UNCHECKED)
+        f.mw_flipH_checkbox.setChecked(n==CB_CHECKED)
+        n = self.conf.get("mw_img_scaleY", CB_UNCHECKED)
+        f.mw_flipV_checkbox.setChecked(n==CB_CHECKED)
 
         # Menubar -----------
         s = self.conf.get("menubar_txt_color", "")
@@ -274,8 +274,8 @@ class SettingsDialog(QDialog):
         f.menubar_color_input.setText(s)
 
         # Reviewer ----------
-        n = self.conf.get("show_bg_in_reviewer", 1)
-        f.bg_reviewer_checkbox.setChecked(n==-1)
+        n = self.conf.get("show_bg_in_reviewer", CB_UNCHECKED)
+        f.bg_reviewer_checkbox.setChecked(n==CB_CHECKED)
         n = self.conf.get("bg_reviewer_opacity", 80)
         f.rev_opacity_slider.setValue(n)
         f.rev_opacity_value.setText("% 5d%%"%n)
@@ -342,7 +342,7 @@ class SettingsDialog(QDialog):
         diag.show()
 
     def _updateCheckbox(self, cb, key):
-        n = -1 if cb==2 else 1
+        n = CB_CHECKED if cb==2 else CB_UNCHECKED
         self.conf.set(key, n)
         self._refresh()
 

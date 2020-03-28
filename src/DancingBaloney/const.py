@@ -21,6 +21,7 @@ MOD_DIR = setWebExports(RE_MEDIA_TYPE)
 
 ADDON_PATH = getAbsolutePath(__file__)
 
-
 DEFAULT_TRANSFORM = (0,100,0,0,1,1)
 
+CB_CHECKED = -1
+CB_UNCHECKED = 1

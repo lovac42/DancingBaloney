@@ -204,7 +204,7 @@ def onAfterStateChange(newS, oldS, *args):
 
 def hideBottomToolbar(self, buf, *args, **kwargs):
     old = kwargs.pop('_old')
-    if not conf.get("hide_bottom_toolbar", 1)==-1:
+    if not conf.get("hide_bottom_toolbar", CB_UNCHECKED)==CB_CHECKED:
         return old(self, buf, *args, **kwargs)
 
     self.web.setFixedHeight(0)
@@ -249,7 +249,7 @@ def onProfileLoaded():
         bundledCSS,
         "around"
     )
-    if conf.get("hide_bottom_toolbar", 1)==-1:
+    if conf.get("hide_bottom_toolbar", CB_UNCHECKED)==CB_CHECKED:
         mw.progress.timer(100,
             lambda:mw.bottomWeb.setFixedHeight(0),
             False
