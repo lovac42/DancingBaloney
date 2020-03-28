@@ -208,6 +208,8 @@ def hideBottomToolbar(self, buf, *args, **kwargs):
         return old(self, buf, *args, **kwargs)
 
     self.web.setFixedHeight(0)
+    self.web.bundledCSS("toolbar.css") #trigger top toolbar update
+
     block = (self._centerBody % buf) + """
 <style>
 #header {
