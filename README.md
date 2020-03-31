@@ -12,7 +12,7 @@ Go to View > Wallpaper to bring up the gui manager and change wallpaper settings
 
 <img src="https://github.com/lovac42/DancingBaloney/blob/master/screenshots/scr_text.jpg?raw=true" />  
 
-<img src="https://github.com/lovac42/DancingBaloney/blob/master/screenshots/scr_settings.gif?raw=true" />  
+<img src="https://github.com/lovac42/DancingBaloney/blob/master/screenshots/scr_settings.png?raw=true" />  
 
 ## Chess themed mode:
 
