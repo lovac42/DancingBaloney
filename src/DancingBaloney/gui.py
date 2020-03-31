@@ -150,6 +150,8 @@ class SettingsDialog(QDialog):
             f.css_web_input : ("custom_webview_style",),
             f.css_tb_input : ("custom_toolbar_style",),
             f.css_tbbtm_input : ("custom_toolbar-bottom_style",),
+            f.css_revbtm_input : ("custom_reviewer-bottom_style",),
+            f.css_editor_input : ("custom_editor_style",),
         }
         for ed,args in controller.items():
             t = ed.text()
@@ -172,10 +174,12 @@ class SettingsDialog(QDialog):
             f.css_web_button : (f.css_web_input,"*.css"),
             f.css_tb_button : (f.css_tb_input,"*.css"),
             f.css_tbbtm_button : (f.css_tbbtm_input,"*.css"),
+            f.css_revbtm_button : (f.css_revbtm_input,"*.css"),
+            f.css_editor_button : (f.css_editor_input,"*.css"),
         }
         for btn,args in controller.items():
             # 'a' is used to get around an issue
-            # with pything binding
+            # with lambda binding
             btn.clicked.connect(
                 lambda a="a",args=args:self._getFile(a,*args)
             )
@@ -294,6 +298,10 @@ class SettingsDialog(QDialog):
         f.css_tb_input.setText(s)
         s = self.conf.get("custom_toolbar-bottom_style", "")
         f.css_tbbtm_input.setText(s)
+        s = self.conf.get("custom_reviewer-bottom_style", "")
+        f.css_revbtm_input.setText(s)
+        s = self.conf.get("custom_editor_style", "")
+        f.css_editor_input.setText(s)
 
 
     def _updateLineEdit(self, text, key):
