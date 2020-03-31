@@ -76,6 +76,7 @@ class SettingsDialog(QDialog):
             self.form.mw_translateY_value.setEnabled(False)
             self.form.mw_flipH_checkbox.setEnabled(False)
             self.form.mw_flipV_checkbox.setEnabled(False)
+            self.form.btm_hide_checkbox.setEnabled(False)
 
     def reject(self):
         self.accept()
